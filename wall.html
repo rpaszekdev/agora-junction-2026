@@ -91,7 +91,7 @@ body.ai #drop{min-height:44vh;padding:6px}
 .price{position:absolute;left:12px;bottom:10px;padding:1px 10px;font-size:15px;white-space:nowrap;background:var(--yellow);color:var(--k);border:2px solid var(--k);border-radius:6px;transform:rotate(-2deg)}
 .badge{position:absolute;right:10px;bottom:9px;width:30px;height:30px;display:grid;place-items:center;border:2px solid var(--k);border-radius:50%;background:#fff;color:var(--k);overflow:hidden;font:9px ui-monospace,monospace}
 .badge img{max-width:78%;max-height:78%}
-.card.best{box-shadow:6px 7px 0 var(--red)}.card.best .price{background:var(--red);color:#fff}.card.best .price::before{content:"AGENT PICK · "}
+.card.best{box-shadow:6px 7px 0 var(--red)}.card.best .price{background:var(--red);color:#fff}.card.best .price::before{content:"PICK · "}
 body.home .card{animation:rise .4s ease-out both;animation-delay:calc(var(--i) * 22ms)}
 
 #log{position:fixed;inset:0 0 0 auto;width:330px;z-index:40;overflow-y:auto;padding:16px 16px 40px;background:var(--card);border-left:2.5px dashed var(--ink);font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;overflow-wrap:anywhere}
@@ -99,6 +99,11 @@ body:not(.log) #log{display:none}
 #log::before{content:"RECEIPT";display:block;text-align:center;font-size:15px;letter-spacing:.3em;border-bottom:1.5px dashed var(--ink);padding-bottom:8px;margin-bottom:6px}
 #log .who{font-weight:700;margin-top:10px;text-transform:uppercase}#log .think{color:#777;white-space:pre-wrap}
 #log .ok{color:var(--green)}#log .bad{color:var(--bad)}#log .say{font-size:13px;margin:4px 0;font-weight:600}
+/* the guide (guide/: her own page, in a frame): she stands above the receipt, and this wall is her search */
+#guide{position:fixed;inset:0 0 auto auto;z-index:41;width:380px;height:52vh;border:0;border-left:2.5px dashed var(--ink)}
+body:not(.guide) #guide{visibility:hidden}
+body.guide{--log:380px}body.guide #log{top:52vh;width:380px;border-top:2.5px dashed var(--ink)}
+.card .why{position:absolute;left:10px;top:10px;max-width:calc(100% - 20px);padding:1px 9px;font-size:13px;line-height:1.25;background:#fff;color:var(--k);border:2px solid var(--k);border-radius:10px;transform:rotate(-1.5deg)}
 
 dialog{width:min(760px,92vw);padding:0;color:var(--ink)}dialog::backdrop{background:#0000008c}
 #dbody{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding:26px}
@@ -140,6 +145,7 @@ dialog{width:min(760px,92vw);padding:0;color:var(--ink)}dialog::backdrop{backgro
 </section>
 <main id=wall aria-label="Products"></main>
 <aside id=log aria-label="Live log: what the agent and Context.dev are doing"></aside>
+<iframe id=guide title="The guide: talk to her about what you want to buy" allow="microphone; autoplay"></iframe>
 <dialog id=dlg class=sk aria-label="Offer details"><button id=dclose type=button aria-label="Close">✕</button><div id=dbody></div></dialog>
 <script type=module>
 const $=s=>document.querySelector(s),wall=$('#wall'),stat=$('#stat'),sayEl=$('#say'),log=$('#log'),qEl=$('#q'),drop=$('#drop'),panel=$('#panel'),tiles=$('#tiles'),tabs=$('#tabs'),dlg=$('#dlg');
@@ -148,7 +154,7 @@ const SORTS={'':'⇅ AS FOUND',asc:'↑ CHEAPEST FIRST',desc:'↓ PRICIEST FIRST
 const SHIPS=/ship|deliver|post|versand|liefer|verzend|bezorg|livraison|exp[ée]di|spedizion|env[ií]o|toimitu|frakt|levering|wysy[łl]/i; // ponytail: word list on the page's own delivery text; ask the extractor for a yes/no field if it misses too much
 
 let run=0,searching=false,request='',items={},n=0,queue=[],advice=null,think={},reads={},credits=0,t0=0,took=0;
-let tapeQ=[],tapeBusy=false,chars=0;
+let tapeQ=[],tapeBusy=false,chars=0,picks={}; // picks: the guide's choice, offer id -> why, best first
 let finding='',kind='all',site='',sort='',brands={},byDomain={},shelf=[],rows=[],sel=-1,ai=false,thread=[],waiting=false,askSeq=0;
 const flag=cc=>/^[A-Z]{2}$/.test(cc)?String.fromCodePoint(...[...cc].map(c=>127397+c.charCodeAt())):'';
 const money=o=>Math.round(o.price).toLocaleString('en')+' '+o.currency;
@@ -188,7 +194,7 @@ $('#dclose').onclick=()=>dlg.close();dlg.onclick=ev=>{if(ev.target===dlg)dlg.clo
 
 function add(o){
   const src='/cut?u='+encodeURIComponent(o.image),it=card(o,src,n);it.onclick=()=>details(o,src,it.style.getPropertyValue('--bg'));
-  wall.append(it);items[o.id]={o,it,n:n++};apply();if(sort)order();
+  wall.append(it);items[o.id]={o,it,n:n++};apply();if(sort||Object.keys(picks).length)order();
   const from=reads[o.site]?.tile?.getBoundingClientRect(),to=it.getBoundingClientRect(); // fly out of the site's tile
   if(from&&!it.hidden&&it.animate)it.animate([{transform:`translate(${from.left-to.left}px,${from.top-to.top}px) scale(.25)`,opacity:.2},{transform:'none',opacity:1}],{duration:420,easing:'cubic-bezier(.2,.8,.2,1)'})}
 function apply(){ // filters, counts, the agent's pick
@@ -198,7 +204,8 @@ function apply(){ // filters, counts, the agent's pick
   if(cc.dataset.k!==all.join()){const was=cc.value;cc.dataset.k=all.join();cc.textContent='';cc.append(new Option('ALL COUNTRIES',''),...all.map(c=>new Option(flag(c)+' '+c,c)));cc.value=all.includes(was)?was:''}
   for(const{o,it}of Object.values(items)){const base=!hide.has(o.id)&&(!site||o.site===site)&&(!max||!(o.eur>max))&&(!cc.value||o.country===cc.value)&&(!ships||SHIPS.test(o.delivery||''));
     if(base){cnt.all++;if(o.kind in cnt)cnt[o.kind]++}
-    it.hidden=!(base&&(kind==='all'||o.kind===kind));it.classList.toggle('best',advice?.best===o.id)}
+    it.hidden=!(base&&(kind==='all'||o.kind===kind));it.classList.toggle('best',advice?.best===o.id||o.id in picks);
+    const why=picks[o.id]||'';let y=it.querySelector('.why');if(why&&!y)y=it.appendChild(el('span','why'));if(y){y.textContent=why;y.hidden=!why}}
   for(const b of tabs.children){b.textContent=KINDS[b.dataset.k]+' '+cnt[b.dataset.k];b.setAttribute('aria-pressed',b.dataset.k===kind)}
   for(const t of tiles.children)t.setAttribute('aria-pressed',t.dataset.site===site);
   $('#sort').textContent=SORTS[sort];
@@ -206,7 +213,7 @@ function apply(){ // filters, counts, the agent's pick
   over.hidden=!(max&&total&&!cnt.all&&!site&&!cc.value&&!ships);if(!over.hidden)over.textContent='NOTHING AT OR UNDER '+max+' EUR. SHOW ALL '+total+' OFFERS';
   pump()}
 function order(){
-  const key=x=>advice?.best===x.o.id?-Infinity:sort==='asc'?(x.o.eur??1e12):sort==='desc'?-(x.o.eur??-1):x.n;
+  const rank=Object.keys(picks),key=x=>advice?.best===x.o.id?-Infinity:x.o.id in picks?-1e13+rank.indexOf(x.o.id):sort==='asc'?(x.o.eur??1e12):sort==='desc'?-(x.o.eur??-1):x.n;
   wall.append(...Object.values(items).sort((a,b)=>key(a)-key(b)).map(x=>x.it));pump()}
 for(const k in KINDS){const b=tabs.appendChild(el('button'));b.type='button';b.dataset.k=k;b.onclick=()=>{kind=k;apply()}}
 $('#max').oninput=$('#cc').onchange=apply;$('#over').onclick=()=>{$('#max').value='';apply()};$('#ships').onclick=ev=>{ev.target.setAttribute('aria-pressed',ev.target.getAttribute('aria-pressed')!=='true');apply()};
@@ -271,20 +278,32 @@ async function stream(path,body,alive,on=show){
   for(;;){const{done,value}=await rd.read();if(done||!alive())break;buf+=td.decode(value,{stream:true});let i;
     while((i=buf.indexOf('\n'))>=0){const l=buf.slice(0,i);buf=buf.slice(i+1);if(l)on(JSON.parse(l))}}}
 
-async function search(q,pick){ // pick = the assistant asked for it, so the agent also names its favourite
-  const mine=++run;request=q;items={};n=0;queue=[];tapeQ=[];tapeBusy=false;chars=0;tape.hidden=true;advice=null;think={};reads={};credits=0;finding='';kind='all';site='';sort='';t0=Date.now();searching=true;
+async function search(q,pick,asked){ // pick = the assistant asked for it, so the agent also names its favourite. asked = the guide asked for it
+  const mine=++run;let lost='';picks={};tell({agora:'start',q,asked:!!asked});request=q;items={};n=0;queue=[];tapeQ=[];tapeBusy=false;chars=0;tape.hidden=true;advice=null;think={};reads={};credits=0;finding='';kind='all';site='';sort='';t0=Date.now();searching=true;
   wall.textContent='';tiles.textContent='';log.textContent='';sayEl.hidden=true;$('#max').value='';$('#ships').setAttribute('aria-pressed',false);$('#res').hidden=false;$('#logbtn').hidden=false;
   document.body.classList.remove('home');document.body.classList.add('log');$('#title').textContent=q;apply();head();
   line('say','you: '+q);remember('s',q.slice(0,80));
-  try{await stream('/search',{q,about:about(),pick:!!pick},()=>mine===run)}
-  catch(err){if(mine===run){head('CONNECTION LOST: '+err.message);line('bad','✗ '+err.message)}}
-  finally{if(mine===run){searching=false;took=Date.now()-t0;if(!tapeBusy)tapeNext();const wait=setInterval(()=>{if(mine!==run||!queue.length){clearInterval(wait);if(mine!==run)return;
+  try{await stream('/search',{q,about:about(),pick:!!pick},()=>mine===run,e=>{show(e);tell({agora:'event',ev:e})})}
+  catch(err){if(mine===run){lost=err.message;head('CONNECTION LOST: '+lost);line('bad','✗ '+lost)}}
+  finally{if(mine===run){tell({agora:'end',error:lost});searching=false;took=Date.now()-t0;if(!tapeBusy)tapeNext();const wait=setInterval(()=>{if(mine!==run||!queue.length){clearInterval(wait);if(mine!==run)return;
     const rs=Object.values(reads);
     if(!Object.keys(items).length)head(rs.length&&rs.filter(r=>r.limit).length>rs.length/2?'CONTEXT.DEV ALLOWS 10 REQUESTS A MINUTE AND THEY ARE USED UP. TRY AGAIN IN A MINUTE.':'NOTHING FOUND. TRY OTHER WORDS.');else head()}},100)}}}
 
+// the guide (../guide: her own page in a frame, on her dev server). She asks for a search and it runs here, as if typed;
+// every event of every search goes to her, so she knows the offers on the wall; her picks come back and are marked.
+// ponytail: wide screens only, and her port by hand: serve guide/dist from wall.py when this goes on a host
+const GUIDE=location.protocol+'//'+location.hostname+':5174',frame=$('#guide');let guideOn=false;
+const tell=m=>{if(guideOn)frame.contentWindow.postMessage(m,GUIDE)};
+addEventListener('message',ev=>{if(ev.source!==frame.contentWindow||ev.origin!==GUIDE)return;const m=ev.data||{};
+  if(m.agora==='ready'){guideOn=true;document.body.classList.add('guide');tell({agora:'theme',dark:document.documentElement.classList.contains('dark')})}
+  else if(m.agora==='search'&&typeof m.q==='string'&&m.q.trim()){close();qEl.blur();qEl.value=m.q.trim().slice(0,300);search(qEl.value,false,true)}
+  else if(m.agora==='picks'&&Array.isArray(m.picks)){picks=Object.fromEntries(m.picks.filter(p=>typeof p?.id==='string').slice(0,3).map(p=>[p.id,String(p.why||'').slice(0,60)]));
+    apply();order();if(m.picks.length)scrollTo({top:0,behavior:'smooth'})}});
+if(matchMedia('(min-width:701px)').matches)frame.src=GUIDE+'/?embed'+location.search.replace('?','&');
+
 $('#logbtn').onclick=()=>document.body.classList.toggle('log');
 const themeBtn=$('#theme'),root=document.documentElement;
-function paintTheme(){const d=root.classList.contains('dark');themeBtn.textContent=d?'☀':'☾';themeBtn.setAttribute('aria-pressed',d)}
+function paintTheme(){const d=root.classList.contains('dark');themeBtn.textContent=d?'☀':'☾';themeBtn.setAttribute('aria-pressed',d);tell({agora:'theme',dark:d})}
 themeBtn.onclick=()=>{root.classList.toggle('dark');try{localStorage.setItem('agora-theme',root.classList.contains('dark')?'dark':'light')}catch{}paintTheme()};paintTheme();
 
 // the bar has two modes: Search (Enter runs it) and AI assistant (a conversation that ends in a ready search)

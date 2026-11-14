@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { GoogleGenAI } from "@google/genai";
 import { defineConfig, type Plugin } from "vite";
@@ -127,10 +127,18 @@ function gesture(): Plugin {
 
 export default defineConfig({
   plugins: [liveToken(), gesture()],
+  // The wall's address: the one page she listens to as a frame (src/search.ts).
+  // Michelle is the guide where her files are (Mixamo's terms keep them out of the repo); elsewhere it is retro-m3
+  define: {
+    __WALL__: JSON.stringify(WALL),
+    __HAS_MICHELLE__: existsSync(
+      resolve(import.meta.dirname, "public/models/mixamo/michelle.fbx"),
+    ),
+  },
   // ponytail: dev server only (the token route lives in it); a real deploy needs this route on a server
   server: {
     port: 5174,
     strictPort: true,
-    proxy: { "/search": WALL, "/brain": WALL, "/cut": WALL },
+    proxy: { "/search": WALL, "/brain": WALL, "/cut": WALL, "/shelf": WALL },
   },
 });

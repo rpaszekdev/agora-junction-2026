@@ -100,11 +100,16 @@ ADVISE_SYSTEM = (
 
 BRAIN_SYSTEM = (
     "You are the brain of Agora's shopping guide: a character who talks with the user by voice while Agora reads European "
-    "second-hand and shop sites live. You get the conversation so far, whether a search is running, the offers now loaded "
+    "second-hand and shop sites live. You get the whole conversation so far as it was heard and spoken (speech transcripts, so "
+    "expect small errors), whether a search is running, the offers now loaded "
     "(one JSON object per line, eur = price in euros; there may be none) and what just happened. Decide what the guide does next. "
-    'Reply with JSON only: {"action":"search"|"answer"|"ask",'
+    # lang comes first on purpose: naming the user's language before writing keeps say in it. Without it, an English request
+    # over Dutch offers was answered in Dutch 4 times of 6; with it, 0 of 6 (and Finnish stayed Finnish)
+    'Reply with JSON only: {"lang":"the language of the user\'s own lines in the conversation, as its English name (the '
+    'offers\' language does not count)","action":"search"|"answer"|"ask",'
     '"request":"for search: the whole request in one line, at most 120 characters: product, budget, condition, place. Else empty",'
-    '"say":"what the guide says aloud, in the user\'s language: at most 2 short spoken sentences, no lists, no ids, no links. '
+    '"say":"what the guide says aloud, in the user\'s language (the language of their own words and of the request, '
+    "whatever language the offers are written in): at most 2 short spoken sentences, no lists, no ids, no links. "
     "search: one short line that you go and look. answer: the answer; name an offer by what it is, its price and its site. "
     'ask: the ONE most useful question",'
     '"show":[{"id":"<offer id>","why":"at most 6 words"}]}. '
@@ -115,7 +120,10 @@ BRAIN_SYSTEM = (
     "While a search is running, never start it again for the same thing: answer that you are still reading the sites. "
     "When a search just finished, the action is answer: choose up to 3 offers that fit the request best (the product itself, "
     "not accessories or parts; inside the budget and condition asked), best first, and say what, price and where. "
-    "If none fit, say so plainly. Only name offers from the list. Never invent an offer, a price or a site."
+    "If none fit, say so plainly. Only name offers from the list. Never invent an offer, a price or a site. "
+    "The user's words reach you through speech recognition, which mishears names: when a city, brand or model in them does not "
+    "exist but sounds like one that does (Tikburg -> Tilburg, Samsun Galaxy -> Samsung Galaxy, Dedika -> Dedica), use the real "
+    "name in request and in say, without mentioning it."
 )
 BRAIN_ACTIONS = ("search", "answer", "ask")
 MAX_SHOW = 3
@@ -264,13 +272,14 @@ TALK_SYSTEM = (
     "'SEARCH: <the whole request in one line>' and the site will offer to run it. Never write that line otherwise."
 )
 MAX_TURNS, MAX_TURN_CHARS = 20, 1000
+BRAIN_TURNS = 60  # the voice guide sends the whole talk as it was heard and spoken: short lines, about 30 exchanges
 
 
-def valid_turns(raw):
+def valid_turns(raw, limit=MAX_TURNS):
     """The conversation comes back from the browser: keep the last short user/assistant turns only."""
     turns = [{"role": t["role"], "content": t["content"].strip()[:MAX_TURN_CHARS]} for t in (raw if isinstance(raw, list) else [])
              if isinstance(t, dict) and t.get("role") in ("user", "assistant") and isinstance(t.get("content"), str) and t["content"].strip()]
-    return turns[-MAX_TURNS:]
+    return turns[-limit:]
 
 
 def talk(env, q, turns, offers, emit):
@@ -696,7 +705,7 @@ class Handler(BaseHTTPRequestHandler):
             turns, offers = valid_turns(body.get("messages")), chat_offers(body.get("offers"))
             return self.stream(lambda emit: talk(self.env, q.strip(), turns, offers, emit))
         if self.path == "/brain":  # the voice guide (guide/): what to do with what the user just said
-            turns, offers = valid_turns(body.get("messages")), chat_offers(body.get("offers"))
+            turns, offers = valid_turns(body.get("messages"), BRAIN_TURNS), chat_offers(body.get("offers"))
             try:
                 move = brain(self.env, q.strip(), turns, offers, body.get("busy") is True, body.get("event") == "found")
             except RuntimeError as e:
@@ -725,6 +734,7 @@ def check():
     assert all(s in SITES for s in FALLBACK_SITES)
     assert valid_turns([{"role": "user", "content": " hi "}, {"role": "system", "content": "x"}, {"role": "assistant", "content": 5}, "junk"]) == [{"role": "user", "content": "hi"}]
     assert valid_turns("junk") == [] and len(valid_turns([{"role": "user", "content": "a" * 5000}] * 50)) == MAX_TURNS
+    assert len(valid_turns([{"role": "user", "content": "a"}] * 99, BRAIN_TURNS)) == BRAIN_TURNS
     r = valid_ready({"say": "s", "request": "", "condition": "weird", "max_price_eur": "9", "queries": [" a ", 7, "", "b", "c"]}, "vw polo")
     assert (r["request"], r["condition"], r["max_price_eur"], r["queries"]) == ("vw polo", "any", None, ["a", "b"])
     assert valid_ready("junk", "vw polo")["queries"] == ["vw polo for sale", "vw polo gebraucht kaufen"]

@@ -41,6 +41,15 @@ export interface LiveOptions {
   onClose(reason: string): void;
   /** The user said `text` and his turn ended without a tool call: the page may act on it itself. */
   onMissed(text: string): void;
+  /** A turn ended: everything that was said in it, in the order it was said (the transcripts of both voices,
+   * and what the user typed). This is the conversation's record: small talk and his own wording included. */
+  onTurn(lines: Line[]): void;
+}
+
+/** One stretch of the conversation by one speaker. */
+export interface Line {
+  role: "user" | "assistant";
+  content: string;
 }
 
 export interface Live {
@@ -157,6 +166,14 @@ export async function connectLive(
   let cancelled: ReadonlySet<string> = new Set(); // tool calls the user talked over: their answers are not sent
   let replyUntil = 0; // something was sent to him: his reply is expected until then (ms)
   let missed: ReturnType<typeof setTimeout> | undefined;
+  let script: Line[] = []; // this turn as it was said: a new line each time the speaker changes
+  const record = (role: Line["role"], text: string) => {
+    const last = script[script.length - 1];
+    script =
+      last?.role === role
+        ? [...script.slice(0, -1), { role, content: last.content + text }]
+        : [...script, { role, content: text }];
+  };
   const onMessage = (m: LiveServerMessage) => {
     const c = m.serverContent;
     if (c?.interrupted) {
@@ -171,11 +188,13 @@ export async function connectLive(
       if (part.inlineData?.data) play(part.inlineData.data);
     if (c?.inputTranscription?.text) {
       heard += c.inputTranscription.text;
+      record("user", c.inputTranscription.text);
       heardAt = performance.now();
       words = { you: words.you + c.inputTranscription.text, guide: "" };
       o.onWords("you", words.you);
     }
     if (c?.outputTranscription?.text) {
+      record("assistant", c.outputTranscription.text);
       words = { you: "", guide: words.guide + c.outputTranscription.text };
       o.onWords("guide", words.guide);
     }
@@ -183,6 +202,8 @@ export async function connectLive(
       words = { you: "", guide: "" };
       generating = false;
       replyUntil = 0;
+      if (script.length) o.onTurn(script);
+      script = [];
       // the backup: he answered the user without his tool, so the page gets the sentence itself
       const text = heard.trim();
       heard = "";
@@ -298,6 +319,7 @@ export async function connectLive(
       const t = text.trim().slice(0, MAX_TEXT);
       if (!t || closed) return;
       heard = t;
+      record("user", t);
       session?.sendRealtimeInput({ text: t });
       replyUntil = performance.now() + REPLY_MS;
     },

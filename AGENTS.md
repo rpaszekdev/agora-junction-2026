@@ -41,6 +41,7 @@ All of this is in `guide/`. Read the header comment of each file: they explain t
 | Hands by loudness | `src/character/gestures.ts` | For the game's own bodies: pauses in the voice start a new hand gesture, loud syllables add small beats |
 | Posing on top of a clip | `src/pose.ts` | `applyGesture` (the talking hands), `applyHead` (the head nods with loudness), `applyPresent` (the right hand held out for the picks) |
 | Short-armed bodies | `src/cartoon.ts` | Their own big, simple poses |
+| The mouth | `src/mouth.ts` | A painted patch on the head bone, opened by loudness measured against her loudest sound of late. Check: `node src/mouth.ts` |
 | The frame loop | `src/main.ts` | Chooses the mood (idle, talking, searching), plays a gesture clip with `act()`, calls the posing functions |
 
 There are three ways a body moves today, chosen by which body is loaded:
@@ -61,7 +62,9 @@ These come from reading the code on 14 Nov, not from watching the result. Look b
 - **Meaning reaches only Michelle.** `onWords` feeds the gesture chooser only when `?who=michelle`
   (`if (MX) watch(who, text)` in `src/main.ts`).
 - **A second gesture is dropped while one plays** (`act()` in `src/main.ts` returns early).
-- **Nothing moves the face.** No code moves a mouth, a jaw or the eyes. The head nods with loudness, that is all.
+- **The face is only a painted mouth.** No body has a jaw bone or mouth shapes, so `src/mouth.ts` puts a dark
+  patch on the face that opens with the voice's loudness (one shape, set by eye on `retro-m3` and Michelle; the
+  short-armed bodies are not checked). Nothing moves the eyes. `window.guide.mouth(0..1)` holds it open to look at.
 - **Already tried and dropped:** giving the voice its own `gesture` tool. The Live model ended its turn at the
   call and said nothing. The header of `src/gesture.ts` has the details; do not repeat it without a new idea.
 
@@ -81,6 +84,9 @@ npm run dev                      # the guide: http://localhost:5174
 - `?who=michelle` needs Mixamo's files in `guide/public/models/mixamo/`. They are not in the repo because
   Mixamo's terms forbid passing them on. The file names are listed at the top of `src/mixamo.ts`.
 - `?nomic` lets you type to her when you have no microphone. She still answers aloud.
+- `http://localhost:8001` (the wall) shows her too, in its right column above the receipt: the same page in a frame
+  (`?embed`). There the wall runs the search and shows it, and passes its events to her as messages; her picks go
+  back and are marked on the cards (`src/search.ts`, and the bridge near the end of `wall.html`). Both servers must run.
 - In the browser console, `window.guide` exposes the loaded person, her mood and `act(clip)` for trying a
   gesture by hand.
 

@@ -1,30 +1,43 @@
 import * as THREE from "three";
+import { createBoard } from "./board";
 import { createCartoon, isCartoon, type Act } from "./cartoon";
 import { createGestures, type GestureFrame } from "./character/gestures";
 import { extra, loadAnim, type Person } from "./character/person";
 import { watchReplies } from "./gesture";
 import { connectLive, type Live } from "./live";
 import { MICHELLE, michelle, type MxClip } from "./mixamo";
-import { applyGesture, applyHead, applyPresent, onScreen } from "./pose";
+import { createMouth, createOpening } from "./mouth";
+import { applyGesture, applyHead, applyPresent } from "./pose";
+import { onPage, toPage } from "./search";
 import { createShop, DECLARATIONS, INSTRUCTION, type Pick } from "./shop";
 
 /** One search is the key's whole minute of reads (10 a minute): the next one waits this long after the last began (ms). */
 const COOLDOWN_MS = 62_000;
 
 /**
- * The guide: Albert's character (albertmajor/apartment-ps1) standing on the Agora page, talking through Gemini Live.
- * His hands follow his own voice (./character/gestures.ts), he looks at his phone while the sites are read, and he
- * holds his three picks out in his right hand as buttons.
- *   ?who=retro-m3   another body of public/models/npc/cast.json
- *   ?who=michelle   Mixamo's Michelle (./mixamo.ts), moved by Mixamo's clips: the voice picks her gestures (./gesture.ts)
+ * The guide: a character standing on the right of the Agora page, talking through Gemini Live. On the left
+ * (./board.ts) the search shows as it happens: what she understood, each site as it is read, the offers and their
+ * photos. She holds her hand out to them once she has chosen.
+ *   ?who=michelle   Mixamo's Michelle (./mixamo.ts), moved by Mixamo's clips: the voice picks her gestures
+ *                   (./gesture.ts). The default where her files are (they are not in the repo: see ./mixamo.ts)
+ *   ?who=retro-m3   Albert's character (albertmajor/apartment-ps1), or another body of public/models/npc/cast.json:
+ *                   his hands follow his own voice (./character/gestures.ts). The default without Michelle's files
  *   ?mock           a canned search (no site is read; the brain is real): for trying the voice and the hand
  *   ?cool=20        with ?mock: searches at least 20 s apart, to try the wait
  *   ?nomic          no microphone: type to talk
+ *   ?embed          she is a frame inside the wall's own page (../../wall.html puts her there): the wall runs the
+ *                   search and shows it, so here is no board, only she. Her picks go to the wall (./search.ts)
  */
 
 const params = new URLSearchParams(location.search);
-const WHO = params.get("who") ?? "retro-m3";
-const MOCK = params.has("mock");
+/** Michelle's files are on this machine (../vite.config.ts looks: Mixamo's terms keep them out of the repo). */
+declare const __HAS_MICHELLE__: boolean;
+const WHO = params.get("who") ?? (__HAS_MICHELLE__ ? MICHELLE : "retro-m3");
+const EMBED = params.has("embed");
+/** The character's share of the window's width: she stands on the right, the search is on the left (index.html). */
+const STAGE = EMBED ? 1 : 0.4;
+const MOCK = params.has("mock") && !EMBED; // (inside the wall's page the search is the wall's: a real one)
+const TALK = EMBED ? "TALK" : "TALK TO THE GUIDE";
 const WITH_MIC = !params.has("nomic");
 /** Michelle: her clips are her gestures, and the voice chooses them (no hands made from its loudness). */
 const MX = WHO === MICHELLE;
@@ -34,6 +47,8 @@ const MX_MOOD = {
   talking: "talk",
   searching: "thinking",
 } as const satisfies Record<Mood, MxClip>;
+/** Michelle's mouth (./mouth.ts): her head is measured with her hair buns on, so it is lower and smaller in shares. */
+const MX_MOUTH = { up: 0.07, wide: 0.19, tall: 0.06, color: 0x1a0705 };
 /** Clips per mood: Michelle's (./mixamo.ts), or the baked ones (public/models/anims/). */
 const CLIP: Record<Mood, string> = MX
   ? MX_MOOD
@@ -49,10 +64,11 @@ const el = <T extends HTMLElement>(id: string) =>
   document.getElementById(id) as T;
 const statusEl = el<HTMLDivElement>("status");
 const wordsEl = el<HTMLDivElement>("words");
-const picksEl = el<HTMLDivElement>("picks");
 const talkBtn = el<HTMLButtonElement>("talk");
 const textIn = el<HTMLInputElement>("text");
 const setStatus = (t: string) => (statusEl.textContent = t);
+document.body.classList.toggle("embed", EMBED);
+talkBtn.textContent = TALK;
 
 // ---------------------------------------------------------------- the scene
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -68,8 +84,9 @@ const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50);
 camera.position.set(0, 1.32, 3.1);
 camera.lookAt(0, 1.12, 0);
 const resize = () => {
-  renderer.setSize(innerWidth, innerHeight);
-  camera.aspect = innerWidth / innerHeight;
+  const w = Math.round(innerWidth * STAGE);
+  renderer.setSize(w, innerHeight);
+  camera.aspect = w / innerHeight;
   camera.updateProjectionMatrix();
 };
 addEventListener("resize", resize);
@@ -78,7 +95,7 @@ resize();
 // ---------------------------------------------------------------- state
 let live: Live | null = null;
 let searching = false;
-let picks: { pick: Pick; node: HTMLAnchorElement }[] = [];
+let picksN = 0; // how many of the offers on the left she has chosen
 let mood: Mood = "idle";
 let talkK = 0; // how much he is talking with his hands (0..1)
 let presentK = 0; // how far his hand is held out (0..1)
@@ -109,36 +126,15 @@ function act(name: MxClip): void {
     });
 }
 
+const board = EMBED ? null : createBoard(el("board"), { photos: !MOCK });
 function showPicks(list: Pick[]): void {
-  picksEl.textContent = "";
-  picks = list.map((pick) => {
-    const a = document.createElement("a");
-    a.className = "pick sk";
-    a.href = pick.offer.url;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    if (pick.offer.image && !MOCK) {
-      const img = new Image();
-      img.alt = "";
-      img.src = `/cut?u=${encodeURIComponent(pick.offer.image)}`;
-      img.onerror = () => img.remove();
-      a.append(img);
-    }
-    const price = document.createElement("b");
-    price.textContent = `${Math.round(pick.offer.price).toLocaleString("en")} ${pick.offer.currency}`;
-    const why = document.createElement("span");
-    why.textContent = pick.why || pick.offer.title.slice(0, 40);
-    const where = document.createElement("i");
-    where.textContent = `${pick.offer.site} · ${pick.offer.country}`;
-    a.append(price, why, where);
-    a.setAttribute(
-      "aria-label",
-      `${pick.offer.title}, ${price.textContent}, ${where.textContent}`,
-    );
-    picksEl.append(a);
-    requestAnimationFrame(() => a.classList.add("on"));
-    return { pick, node: a };
-  });
+  picksN = list.length;
+  if (board) board.picks(list);
+  else
+    toPage({
+      agora: "picks",
+      picks: list.map((p) => ({ id: p.offer.id, why: p.why })),
+    });
 }
 
 const watch = watchReplies((clip) => {
@@ -150,16 +146,29 @@ const shop = createShop(
     onStatus: setStatus,
     onSearching: (on) => (searching = on),
     onPicks: showPicks,
+    onEvent: (ev) => board?.event(ev),
     voiceFree: () => !!live && !live.busy(),
     note: (text) => live?.note(text),
   },
   {
-    mock: MOCK,
+    from: EMBED ? "page" : MOCK ? "mock" : "wall",
     cooldownMs: MOCK
       ? Math.max(0, Number(params.get("cool")) || 0) * 1000
       : COOLDOWN_MS,
   },
 );
+
+if (EMBED) {
+  onPage((m) => {
+    const q = m["q"];
+    // a search typed into the wall's own bar: she follows it, so she knows what is on the wall
+    if (m.agora === "start" && !m["asked"] && typeof q === "string")
+      shop.follow(q);
+    else if (m.agora === "theme")
+      document.documentElement.classList.toggle("dark", m["dark"] === true);
+  });
+  toPage({ agora: "ready" });
+}
 
 /** Open the session (`withMic` false: typing only, no microphone asked for), or close the one that is open. */
 async function start(withMic: boolean, toggle = true): Promise<void> {
@@ -168,7 +177,7 @@ async function start(withMic: boolean, toggle = true): Promise<void> {
     live.close();
     live = null;
     talkBtn.setAttribute("aria-pressed", "false");
-    talkBtn.textContent = "TALK TO THE GUIDE";
+    talkBtn.textContent = TALK;
     setStatus("STOPPED");
     return;
   }
@@ -180,6 +189,7 @@ async function start(withMic: boolean, toggle = true): Promise<void> {
         declarations: DECLARATIONS,
         tools: shop.tools,
         onMissed: (text) => void shop.heard(text),
+        onTurn: (lines) => shop.said(lines),
         onWords(who, text) {
           wordsEl.className = who;
           wordsEl.textContent = text;
@@ -189,7 +199,7 @@ async function start(withMic: boolean, toggle = true): Promise<void> {
         onClose(reason) {
           live = null;
           talkBtn.setAttribute("aria-pressed", "false");
-          talkBtn.textContent = "TALK TO THE GUIDE";
+          talkBtn.textContent = TALK;
           setStatus(`ENDED: ${reason}`.slice(0, 120));
         },
       },
@@ -223,26 +233,6 @@ el<HTMLFormElement>("bar").addEventListener("submit", (ev) => {
 });
 
 // ---------------------------------------------------------------- the character, each frame
-/** The picks sit this far (px) to the outside of his hand. */
-let PICKS_ASIDE = 90;
-function layoutPicks(p: Person): void {
-  if (!picks.length) return;
-  const hand = onScreen(p, "RightHand", camera, innerWidth, innerHeight);
-  if (!hand) return;
-  // a little fan above his palm; ponytail: fixed offsets in px, scale them with the canvas if he is ever resized
-  const n = picks.length;
-  picks.forEach(({ node }, i) => {
-    const spread = (i - (n - 1) / 2) * 142;
-    const lift = 150 + (n > 1 ? Math.abs(i - (n - 1) / 2) * -26 : 0);
-    const x = Math.max(
-      8,
-      Math.min(innerWidth - 140, hand.x + spread - 66 - PICKS_ASIDE),
-    ); // off to his side, clear of his face
-    const y = Math.max(8, hand.y - lift - 60);
-    node.style.transform = `translate(${x}px, ${y}px) rotate(${(i - (n - 1) / 2) * 4}deg)`;
-  });
-}
-
 async function main(): Promise<void> {
   const p = MX ? await michelle() : await extra(WHO);
   if (!MX) await Promise.all(Object.values(CLIP).map((c) => loadAnim(c)));
@@ -269,7 +259,9 @@ async function main(): Promise<void> {
   const hands = createGestures();
   // a short-armed body gets its own hands (./cartoon.ts) and keeps to the idle clip: a person's would sink into it
   const cartoon = isCartoon(p, height) ? createCartoon() : null;
-  if (cartoon) PICKS_ASIDE = 230; // his hand is beside his big head: the picks go further out
+  const mouth = createMouth(p, height, MX ? MX_MOUTH : {});
+  const opening = createOpening();
+  let mouthTry: number | null = null; // set by hand (window.guide.mouth): the voice is not asked
   setStatus(MOCK ? "READY (MOCK SEARCH)" : "READY");
   (window as unknown as { guide: unknown }).guide = {
     person: p,
@@ -280,6 +272,8 @@ async function main(): Promise<void> {
     cartoon: !!cartoon,
     heard: shop.heard,
     act,
+    /** Hold the mouth this far open (0..1) to look at it; null gives it back to the voice. */
+    mouth: (k: number | null) => (mouthTry = k),
     set searching(v: boolean) {
       searching = v;
     },
@@ -309,7 +303,7 @@ async function main(): Promise<void> {
       ((speaking && !searching ? 1 : 0) - talkK) *
       Math.min(1, dt * (speaking ? 2.5 : 1.2));
     presentK +=
-      ((picks.length && !searching ? 1 : 0) - presentK) * Math.min(1, dt * 3);
+      ((picksN && !searching ? 1 : 0) - presentK) * Math.min(1, dt * 3);
 
     p.reset(dt);
     if (cartoon) {
@@ -319,10 +313,10 @@ async function main(): Promise<void> {
           ? "hello"
           : speaking
             ? "talking"
-            : picks.length
+            : picksN
               ? "presenting"
               : "idle";
-      cartoon.apply(p, dt, act, level, open, picks.length > 0);
+      cartoon.apply(p, dt, act, level, open, picksN > 0);
       applyHead(p, null, 0, open, now / 1000);
     } else if (MX) {
       // her clips are her gestures: only the hand held out and the head go on top
@@ -334,9 +328,10 @@ async function main(): Promise<void> {
       applyPresent(p, presentK);
       applyHead(p, frame, talkK, open, now / 1000);
     }
+    const heard = opening(level, dt); // (every frame: it keeps its own measure of how loud she is)
+    mouth(mouthTry ?? heard);
     p.root.updateMatrixWorld(true);
     shop.tick();
-    layoutPicks(p);
     renderer.render(scene, camera);
     requestAnimationFrame(tick);
   };
