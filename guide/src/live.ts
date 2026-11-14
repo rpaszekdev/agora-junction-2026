@@ -22,6 +22,10 @@ const MISS_MS = 1200;
 const QUIET_MS = 1200;
 /** After something was sent to him, his reply is waited for this long before a note may follow (ms). */
 const REPLY_MS = 6000;
+/** Gemini now and then refuses a new session ("Resource has been exhausted") and takes the next one a moment later:
+ * a refused connection is tried again this often, this much longer apart each time (ms). */
+const CONNECT_TRIES = 4;
+const RETRY_MS = 700;
 
 export type Tool = (
   args: Record<string, unknown>,
@@ -91,13 +95,17 @@ export async function connectLive(
   withMic: boolean,
 ): Promise<Live> {
   o.onStatus("GETTING A SESSION");
-  const r = await fetch("/api/live-token");
-  const { token, error } = (await r.json()) as {
-    token?: string;
-    error?: string;
+  /** A token opens one session only: every try needs its own. */
+  const freshToken = async (): Promise<string> => {
+    const r = await fetch("/api/live-token");
+    const { token, error } = (await r.json()) as {
+      token?: string;
+      error?: string;
+    };
+    if (!r.ok || !token)
+      throw new Error(error ?? `the token route said ${r.status}`);
+    return token;
   };
-  if (!r.ok || !token)
-    throw new Error(error ?? `the token route said ${r.status}`);
 
   // ---- his voice: queued buffers, through an analyser
   const out = new AudioContext({ sampleRate: VOICE_RATE });
@@ -139,6 +147,7 @@ export async function connectLive(
 
   // ---- the session
   let closed = false;
+  let open = false; // the session is set up: before that, a close is a refused try, not the end
   let words: { you: string; guide: string } = { you: "", guide: "" };
   let session: Session | null = null;
   let heard = ""; // what the user said this turn (the transcript of his speech, or what he typed)
@@ -204,30 +213,49 @@ export async function connectLive(
         });
     }
   };
-  o.onStatus("CONNECTING");
-  const ai = new GoogleGenAI({
-    apiKey: token,
-    httpOptions: { apiVersion: "v1alpha" },
-  });
-  session = await ai.live.connect({
-    model: MODEL,
-    config: {
-      responseModalities: [Modality.AUDIO],
-      systemInstruction: o.instruction,
-      tools: [{ functionDeclarations: o.declarations }],
-      inputAudioTranscription: {},
-      outputAudioTranscription: {},
-    },
-    callbacks: {
-      onmessage: onMessage,
-      onerror: (e) =>
-        o.onStatus(`ERROR: ${e.message || "the connection failed"}`),
-      onclose: (e) => {
-        closed = true;
-        o.onClose(e.reason || "the session ended");
+  const connect = async (): Promise<Session> => {
+    const ai = new GoogleGenAI({
+      apiKey: await freshToken(),
+      httpOptions: { apiVersion: "v1alpha" },
+    });
+    return ai.live.connect({
+      model: MODEL,
+      config: {
+        responseModalities: [Modality.AUDIO],
+        systemInstruction: o.instruction,
+        tools: [{ functionDeclarations: o.declarations }],
+        inputAudioTranscription: {},
+        outputAudioTranscription: {},
       },
-    },
-  });
+      callbacks: {
+        onmessage: onMessage,
+        onerror: (e) => {
+          if (open)
+            o.onStatus(`ERROR: ${e.message || "the connection failed"}`);
+        },
+        onclose: (e) => {
+          if (!open) return; // a refused try: connect() throws and the next try follows
+          closed = true;
+          o.onClose(e.reason || "the session ended");
+        },
+      },
+    });
+  };
+  for (let n = 1; !session; n++) {
+    o.onStatus(
+      n === 1 ? "CONNECTING" : `CONNECTING (TRY ${n} OF ${CONNECT_TRIES})`,
+    );
+    try {
+      session = await connect();
+    } catch (e) {
+      if (n === CONNECT_TRIES) {
+        void out.close();
+        throw e;
+      }
+      await new Promise((r) => setTimeout(r, RETRY_MS * n));
+    }
+  }
+  open = true;
 
   // ---- the microphone
   let mic: { ctx: AudioContext; stream: MediaStream } | null = null;
