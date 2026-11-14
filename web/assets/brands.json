@@ -1,0 +1,140 @@
+{
+ "tori": {
+  "domain": "tori.fi",
+  "name": "Tori",
+  "logo": "https://media.brand.dev/827b16f7-884b-496b-803f-0d673af0656d.png",
+  "color": "#296dcc"
+ },
+ "blocket": {
+  "domain": "blocket.se",
+  "name": "Blocket",
+  "logo": "https://media.brand.dev/bea6102f-46ff-4bd0-bbbb-fbc453ffa5c1.png",
+  "color": "#ffffff"
+ },
+ "finn": {
+  "domain": "finn.no",
+  "name": "FINN",
+  "logo": "https://media.brand.dev/f194b845-4515-4c1b-9b51-fd618ed3be77.png",
+  "color": "#ffffff"
+ },
+ "dba": {
+  "domain": "dba.dk",
+  "name": "DBA",
+  "logo": "https://media.brand.dev/29fc85bc-640a-447e-ba7e-30b09b4e6b1b.png",
+  "color": "#ffffff"
+ },
+ "kleinanzeigen": {
+  "domain": "kleinanzeigen.de",
+  "name": "Kleinanzeigen",
+  "logo": "https://media.brand.dev/16c70043-0555-449a-a735-58502529f2a5.svg",
+  "color": "#649c2c"
+ },
+ "marktplaats": {
+  "domain": "marktplaats.nl",
+  "name": "Marktplaats",
+  "logo": "https://media.brand.dev/d68dbe69-d66c-4297-9a79-49dfd015365c.svg",
+  "color": "#116db4"
+ },
+ "2dehands": {
+  "domain": "2dehands.be",
+  "name": "2dehands",
+  "logo": "https://media.brand.dev/036ca341-c0ec-49fb-9504-0ee057d25efa.svg",
+  "color": "#5f92cd"
+ },
+ "olx_pl": {
+  "domain": "olx.pl",
+  "name": "OLX",
+  "logo": "https://media.brand.dev/b173a2e3-c102-4f2b-908e-fc7d29640352.png",
+  "color": "#f9f9f9"
+ },
+ "vinted": {
+  "domain": "vinted.fi",
+  "name": "Vinted",
+  "logo": "https://media.brand.dev/50db2377-b55f-4a80-bc73-0d2eed449941.png",
+  "color": "#007782"
+ },
+ "gumtree": {
+  "domain": "gumtree.com",
+  "name": "Gumtree",
+  "logo": "https://media.brand.dev/0d7d1771-d3f5-4450-9a68-47d8f9cc57f1.png",
+  "color": "#0d475c"
+ },
+ "rebuy": {
+  "domain": "rebuy.de",
+  "name": "rebuy",
+  "logo": "https://media.brand.dev/77a69aa4-fe25-4e94-9e8f-59d5513a4f99.png",
+  "color": "#ffffff"
+ },
+ "backmarket": {
+  "domain": "backmarket.de",
+  "name": "Back Market",
+  "logo": "https://media.brand.dev/a250bd59-6d59-445a-99ba-41be16c69cdd.png",
+  "color": "#e3f77e"
+ },
+ "amazon_de": {
+  "domain": "amazon.de",
+  "name": "Amazon",
+  "logo": "https://media.brand.dev/21a7688c-a676-406b-8aa3-aafe49b8988d.png",
+  "color": "#fc6506"
+ },
+ "verkkokauppa": {
+  "domain": "verkkokauppa.com",
+  "name": "Verkkokauppa",
+  "logo": "https://media.brand.dev/8f8cc967-2e6d-4b75-bc1a-6e92f063a215.png",
+  "color": "#02da86"
+ },
+ "power_fi": {
+  "domain": "power.fi",
+  "name": "Power",
+  "logo": "https://media.brand.dev/664d5d92-3193-4b60-bf7e-887c25de57a4.png",
+  "color": "#fc6404"
+ },
+ "cdiscount": {
+  "domain": "cdiscount.com",
+  "name": "Cdiscount",
+  "logo": "https://media.brand.dev/31c7bf25-284e-45f2-ad97-b3735a12a516.png",
+  "color": "#3732ff"
+ },
+ "idealo": {
+  "domain": "idealo.de",
+  "name": "Idealo",
+  "logo": "https://media.brand.dev/29d9d6fc-6c5e-411a-8800-b17068120c5d.webp",
+  "color": "#0c2f4e"
+ },
+ "pricerunner": {
+  "domain": "pricerunner.se",
+  "name": "PriceRunner",
+  "logo": "https://media.brand.dev/7ddc5eae-417e-4842-972e-ca443b988222.png",
+  "color": "#7039e2"
+ },
+ "ebay_de": {
+  "domain": "ebay.de",
+  "name": "eBay",
+  "logo": "https://media.brand.dev/4bf64df6-7129-49f1-a3cf-4d354117528b.svg",
+  "color": "#0968f6"
+ },
+ "leboncoin": {
+  "domain": "leboncoin.fr",
+  "name": "Leboncoin",
+  "logo": "https://media.brand.dev/954f5a95-476a-46eb-833d-5342728f3d64.svg",
+  "color": "#ffffff"
+ },
+ "wallapop": {
+  "domain": "wallapop.com",
+  "name": "Wallapop",
+  "logo": "https://media.brand.dev/33e4d994-73ea-46a0-8f34-56fe32bbac9b.svg",
+  "color": "#ffffff"
+ },
+ "subito": {
+  "domain": "subito.it",
+  "name": "Subito",
+  "logo": "https://media.brand.dev/0f28987b-f222-49d4-b018-dd3aaddb3dde.png",
+  "color": "#f9423a"
+ },
+ "willhaben": {
+  "domain": "willhaben.at",
+  "name": "willhaben",
+  "logo": "https://media.brand.dev/7665f6e7-8866-498e-8a2a-eb10b6e59e35.png",
+  "color": "#ffffff"
+ }
+}

@@ -642,6 +642,16 @@ class Handler(BaseHTTPRequestHandler):
                     return self.send_bytes(200, "image/png" if name.endswith(".png") else "application/json", f.read())
             except OSError:
                 return self.say(404, "Not found")
+        if path.path.startswith("/web/"):  # Albert's price line (web/: his line.js, core.js, flags.js, line.css, marks, flags)
+            name = path.path[len("/web/"):]
+            if not re.fullmatch(r"js/[\w-]+\.js|css/[\w-]+\.css|assets/[\w-]+\.(svg|json)|assets/flags/[a-z]{2}\.svg|assets/shelf/[\w-]+\.png", name):
+                return self.say(404, "Not found")
+            kind = {"js": "text/javascript", "css": "text/css", "svg": "image/svg+xml", "json": "application/json", "png": "image/png"}[name.rsplit(".", 1)[1]]
+            try:
+                with open(os.path.join(agora.HERE, "web", *name.split("/")), "rb") as f:
+                    return self.send_bytes(200, kind if kind == "image/png" else kind + "; charset=utf-8", f.read())
+            except OSError:
+                return self.say(404, "Not found")
         if path.path == "/cut":
             url = (urllib.parse.parse_qs(path.query).get("u") or [""])[0]
             try:

@@ -13,6 +13,9 @@ import {
  */
 
 const MODEL = "gemini-3.8-live";
+/** His voice: one of Gemini's ready-made ones. Puck is a man's, upbeat (measured ~108 Hz; the default one, a woman's,
+ * ~186 Hz). Other men's: Charon (~102 Hz, calm), Fenrir (~134 Hz), Orus (~147 Hz). An unknown name gets the default. */
+const VOICE = "Puck";
 const MIC_RATE = 16000;
 const VOICE_RATE = 24000;
 const MAX_TEXT = 500;
@@ -243,6 +246,9 @@ export async function connectLive(
       model: MODEL,
       config: {
         responseModalities: [Modality.AUDIO],
+        speechConfig: {
+          voiceConfig: { prebuiltVoiceConfig: { voiceName: VOICE } },
+        },
         systemInstruction: o.instruction,
         tools: [{ functionDeclarations: o.declarations }],
         inputAudioTranscription: {},

@@ -6,6 +6,7 @@ import { extra, loadAnim, type Person } from "./character/person";
 import { watchReplies } from "./gesture";
 import { connectLive, type Live } from "./live";
 import { MICHELLE, michelle, type MxClip } from "./mixamo";
+import { createMonkey, type Monkey, type MonkeyMood } from "./monkey";
 import { createMouth, createOpening } from "./mouth";
 import { applyGesture, applyHead, applyPresent } from "./pose";
 import { onPage, toPage } from "./search";
@@ -22,6 +23,7 @@ const COOLDOWN_MS = 62_000;
  *                   (./gesture.ts). The default where her files are (they are not in the repo: see ./mixamo.ts)
  *   ?who=retro-m3   Albert's character (albertmajor/apartment-ps1), or another body of public/models/npc/cast.json:
  *                   his hands follow his own voice (./character/gestures.ts). The default without Michelle's files
+ *   ?who=monkey     Price Monkey (./monkey.ts): a flat drawing, no 3D. The wall's page asks for him
  *   ?mock           a canned search (no site is read; the brain is real): for trying the voice and the hand
  *   ?cool=20        with ?mock: searches at least 20 s apart, to try the wait
  *   ?nomic          no microphone: type to talk
@@ -37,10 +39,12 @@ const EMBED = params.has("embed");
 /** The character's share of the window's width: she stands on the right, the search is on the left (index.html). */
 const STAGE = EMBED ? 1 : 0.4;
 const MOCK = params.has("mock") && !EMBED; // (inside the wall's page the search is the wall's: a real one)
-const TALK = EMBED ? "TALK" : "TALK TO THE GUIDE";
+const TALK = EMBED ? "Talk" : "Talk to the guide";
 const WITH_MIC = !params.has("nomic");
 /** Michelle: her clips are her gestures, and the voice chooses them (no hands made from its loudness). */
 const MX = WHO === MICHELLE;
+/** Price Monkey: a picture (./monkey.ts) instead of a 3D body. */
+const MONKEY = WHO === "monkey";
 type Mood = "idle" | "talking" | "searching";
 const MX_MOOD = {
   idle: "idle-breathing",
@@ -105,6 +109,8 @@ let helloUntil = 0; // he waves until then (ms): the session just opened
 let body: Person | null = null; // the character, once loaded
 let acting = 0; // a gesture for what she says plays until then (ms; 0: none)
 let spokeAt = -Infinity; // when her voice was last heard (ms)
+let reading = false; // the running search is reading sites (before that the request is being read)
+let monkey: Monkey | null = null; // Price Monkey, when he is the guide (?who=monkey)
 
 /** A gesture for what she is saying (./gesture.ts): its clip once, then (in the frame loop) back to the mood's. */
 function act(name: MxClip): void {
@@ -129,6 +135,7 @@ function act(name: MxClip): void {
 const board = EMBED ? null : createBoard(el("board"), { photos: !MOCK });
 function showPicks(list: Pick[]): void {
   picksN = list.length;
+  if (list.length) monkey?.found();
   if (board) board.picks(list);
   else
     toPage({
@@ -146,7 +153,12 @@ const shop = createShop(
     onStatus: setStatus,
     onSearching: (on) => (searching = on),
     onPicks: showPicks,
-    onEvent: (ev) => board?.event(ev),
+    onEvent: (ev) => {
+      // (for Price Monkey: he thinks until the first site is being read, then he searches)
+      if (ev.type === "start") reading = false;
+      else if (ev.type === "read_start") reading = true;
+      board?.event(ev);
+    },
     voiceFree: () => !!live && !live.busy(),
     note: (text) => live?.note(text),
   },
@@ -206,7 +218,7 @@ async function start(withMic: boolean, toggle = true): Promise<void> {
       withMic,
     );
     talkBtn.setAttribute("aria-pressed", "true");
-    talkBtn.textContent = "STOP";
+    talkBtn.textContent = "Stop";
     helloUntil = performance.now() + 1600;
   } catch (e) {
     console.error(e);
@@ -233,7 +245,49 @@ el<HTMLFormElement>("bar").addEventListener("submit", (ev) => {
 });
 
 // ---------------------------------------------------------------- the character, each frame
+/** Price Monkey's frame loop: his mood, his drawn mouth and the shop's clock. No 3D. */
+function monkeyMain(): void {
+  renderer.domElement.hidden = true;
+  const m = (monkey = createMonkey());
+  const opening = createOpening();
+  setStatus(MOCK ? "READY (MOCK SEARCH)" : "READY");
+  (window as unknown as { guide: unknown }).guide = {
+    showPicks,
+    heard: shop.heard,
+    get mood() {
+      return mood;
+    },
+    set searching(v: boolean) {
+      searching = v;
+    },
+    /** By hand: the search is reading sites (the telescope) or not yet (he thinks). */
+    set reading(v: boolean) {
+      reading = v;
+    },
+  };
+  let last = performance.now();
+  const tick = (now: number) => {
+    const dt = Math.min(0.1, (now - last) / 1000);
+    last = now;
+    const level = live?.level() ?? null;
+    if (level !== null && level > -50) spokeAt = now;
+    const his: MonkeyMood = searching
+      ? reading
+        ? "searching"
+        : "thinking"
+      : now - spokeAt < TALK_HOLD_MS
+        ? "talking"
+        : "idle";
+    mood = his === "thinking" ? "searching" : his;
+    m.draw(his, opening(level, dt), now);
+    shop.tick();
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
 async function main(): Promise<void> {
+  if (MONKEY) return monkeyMain();
   const p = MX ? await michelle() : await extra(WHO);
   if (!MX) await Promise.all(Object.values(CLIP).map((c) => loadAnim(c)));
   body = p;

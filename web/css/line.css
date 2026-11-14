@@ -1,0 +1,610 @@
+/* THE LINE (B2). One ruler, real objects standing on it. See DESIGN.md sections 1, 5 and 6.
+   Transform and opacity only for motion. Yellow is reserved for the leader's highlighter. */
+
+#line.ln {
+  position: relative;
+  margin: 0;
+  outline: none;
+  -webkit-user-select: none; user-select: none;
+}
+.ln-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* caption: who took the lead (from rank.reason) */
+.ln-caption {
+  margin: 0 0 0 0; min-height: 24px;
+  font: 400 15px/24px var(--sans); color: var(--ink-2);
+  opacity: 0; transition: opacity 250ms linear;
+}
+.ln-caption.on { opacity: 1; }
+[data-ln-phase="start"] .ln-caption { display: none; }
+
+.ln-stage { position: relative; height: 340px; }
+.ln-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.ln-figs { position: absolute; inset: 0; }
+.ln-sink { position: absolute; inset: 0; pointer-events: none; }
+
+/* axis */
+.ln-rule { stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; }
+.ln-tk { stroke: var(--ink-3); stroke-width: 1; }
+.ln-tl { font: 400 12px var(--mono); fill: var(--ink-3); font-variant-numeric: tabular-nums; }
+.ln-ticks, .ln-axis { transform-box: view-box; }
+
+/* highlighter swipe under the leader (svg, under the axis ink) */
+.ln-hlg { opacity: 0; transition: opacity 300ms linear, transform 450ms var(--ease); }
+.ln-hlg.on { opacity: 1; }
+.ln-hlg use { fill: var(--accent); }
+.ln-hlin { transform-box: fill-box; transform-origin: 0 50%; }
+.ln-turned .ln-hlg { opacity: 0; transition: opacity 600ms linear; }
+
+/* ghosts, arcs, bracket, notch */
+.ln-gdot { fill: var(--ink-3); opacity: .55; }
+.ln-arc { fill: none; stroke: var(--ink-3); stroke-width: 1; opacity: .6; }
+.ln-bracket path { fill: none; stroke: var(--ink-3); stroke-width: 1; }
+.ln-bracket text { font: 400 11px var(--mono); fill: var(--ink-3); font-variant-numeric: tabular-nums; }
+.ln-band { animation: ln-fade 300ms linear both; }
+.ln-notchl { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 3 3; }
+.ln-notcht { font: 400 12px var(--mono); fill: var(--ink-2); }
+
+/* ---------- objects ---------- */
+.ln-o {
+  position: absolute; left: 0; top: 0; width: 0; height: 0; margin: 0;
+  --fw: 28px; --fh: 28px; --lvl: 0; --s: 1;
+  z-index: 2; cursor: pointer; outline: none;
+  will-change: transform;
+}
+.ln-o.full { --fw: 104px; --fh: 104px; z-index: 3; }
+.ln-o.dot.tuck { z-index: 1; }
+.ln-o.full.mono { --fw: 76px; --fh: 76px; }
+.ln-o.ln-shelfo { --fw: 86px; --fh: 86px; }
+.ln-o.lead, .ln-o.win { z-index: 4; }
+.ln-o:hover, .ln-o:focus-visible { z-index: 10; }
+
+.ln-face {
+  position: absolute; left: calc(var(--fw) / -2); bottom: 0;
+  width: var(--fw); height: var(--fh);
+  transform: translateY(calc(var(--lvl) * -1px)) scale(var(--s));
+  transform-origin: 50% 100%;
+  transition: transform var(--t-drop, 450ms) var(--ease), opacity var(--t-ui, 160ms) linear;
+}
+.ln-o.dot .ln-face { bottom: calc(var(--fh) / -2); transform-origin: 50% 50%; }
+.ln-o.dot:hover, .ln-o.dot:focus-visible { --s: 2.5714; }
+.ln-o.full:hover, .ln-o.full:focus-visible { --s: 1.04; }
+
+.ln-pic { position: relative; width: 100%; height: 100%; }
+.ln-pic img {
+  display: block; width: 100%; height: 100%;
+  object-fit: contain; object-position: 50% 100%;
+  -webkit-user-drag: none;
+}
+/* raw photo (no cutout): a rounded plate on --stage */
+.ln-o.raw .ln-pic { background: var(--stage); border-radius: 10px; padding: 8px; overflow: hidden; }
+.ln-o.raw .ln-pic img { object-position: 50% 50%; mix-blend-mode: multiply; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ln-o.raw .ln-pic img { mix-blend-mode: normal; } }
+:root[data-theme="dark"] .ln-o.raw .ln-pic img { mix-blend-mode: normal; }
+
+/* dots: 28 px round photo beads on the line */
+.ln-o.dot .ln-pic {
+  border-radius: 50%; overflow: hidden; padding: 2px;
+  background: var(--stage); box-shadow: 0 0 0 1px var(--hair), 0 0 0 2.5px var(--paper);
+}
+.ln-o.dot.raw .ln-pic { padding: 0; }
+.ln-o.dot.raw .ln-pic img { object-fit: cover; }
+.ln-o.dot .ln-pic img { object-position: 50% 50%; }
+
+/* monogram plate: services and missing photos */
+.ln-o.mono .ln-pic {
+  display: grid; place-items: center; background: var(--stage); border-radius: 10px;
+  box-shadow: inset 0 0 0 1px var(--hair);
+}
+.ln-o.mono .ln-pic span { color: var(--ink-2); }
+.ln-o.mono .ln-pic .l { display: none; font: 400 15px/1 var(--serif); }
+.ln-o.mono .ln-pic .wm {
+  font: 400 16px/1.1 var(--serif); text-align: center; padding: 0 6px; overflow-wrap: anywhere;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.ln-o.mono .ln-pic .wm.long { font-size: 11.5px; padding: 0 4px; letter-spacing: -.01em; }
+.ln-o.dot.mono .ln-pic { border-radius: 50%; }
+.ln-o.dot.mono .ln-pic .l { display: none; }
+/* a bead with no photo and no known logo: a quiet dot, never a lonely letter */
+.ln-o.dot.mono:not(.logo) .ln-pic::after {
+  content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); opacity: .8;
+}
+.ln-o.dot.mono .ln-pic .wm { display: none; }
+.ln-o.mono.logo .ln-pic { box-shadow: inset 0 0 0 1px var(--hair); }
+.ln-o.mono .ln-pic .ln-logo { width: 72%; height: 72%; object-fit: contain; }
+.ln-o.dot.mono.logo .ln-pic { padding: 3px; }
+
+/* contact shadow: the only shadow on the main view */
+.ln-shadow {
+  position: absolute; left: 12%; right: 12%; bottom: -6px; height: 12px; z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(28,27,24,.18) 0%, rgba(28,27,24,.08) 40%, transparent 70%);
+  pointer-events: none;
+}
+.ln-o.dot .ln-shadow { display: none; }
+
+/* a raised cutout still stands at its price: a hairline stem down to its true x, a small foot on the axis */
+.ln-stem {
+  position: absolute; left: -0.5px; bottom: 0; width: 1px; height: 1px;
+  background: var(--ink-3); transform-origin: 50% 100%;
+  transform: scaleY(var(--lvl)); transition: transform var(--t-drop, 450ms) var(--ease);
+}
+.ln-o.dot .ln-stem { display: none; }
+.ln-o.full.raised::before {
+  content: ""; position: absolute; left: -3px; bottom: -3px; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--ink-2); pointer-events: none;
+}
+.ln-o.full.raised .ln-shadow { opacity: .5; }
+
+/* condition letter on the plate, the word on hover */
+.ln-cond {
+  position: absolute; right: -2px; bottom: 4px; height: 18px; min-width: 18px; padding: 0 5px;
+  display: grid; place-items: center;
+  font: 500 10px/1 var(--mono); color: var(--ink-2);
+  background: var(--paper); border-radius: 9px; box-shadow: inset 0 0 0 1px var(--hair);
+}
+.ln-cond .w {
+  position: absolute; right: 0; top: 0; height: 18px; padding: 0 7px; line-height: 18px;
+  font: 500 11px/18px var(--sans); white-space: nowrap; color: var(--ink);
+  background: var(--paper); border-radius: 9px; box-shadow: inset 0 0 0 1px var(--hair);
+  opacity: 0; transition: opacity var(--t-ui, 160ms) linear;
+}
+.ln-o:hover .ln-cond .w, .ln-o:focus-visible .ln-cond .w { opacity: 1; }
+/* full objects say the word (used / new / refurb); only the small dots keep a letter */
+.ln-o.full .ln-cond .w { opacity: 1; position: static; display: block; box-shadow: none; background: none; padding: 0; }
+.ln-o.full .ln-cond { padding: 0 7px; }
+.ln-o.full .ln-cond .l { display: none; }
+.ln-o.dot .ln-cond { display: none; }
+
+/* caption above the object: price (and site on hover / for the leader) */
+.ln-cap {
+  position: absolute; left: 50%; bottom: calc(100% + 6px - var(--capdrop, 0px));
+  transform: translateX(calc(-50% + var(--capx, 0px))); transform-origin: 50% 100%;
+  display: flex; gap: 6px; align-items: baseline; white-space: nowrap;
+  font: 400 12px/1.2 var(--sans); color: var(--ink-2); pointer-events: none;
+}
+.ln-cap .p { font: 400 12px/1.2 var(--mono); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.ln-o.lead .ln-cap .p, .ln-o.win .ln-cap .p, .ln-o.cheapest .ln-cap .p, .ln-shelfo .ln-cap .p, .ln-extra .ln-cap .p { font-weight: 500; color: var(--ink); }
+.ln-o.cheapest .ln-cap .d { display: inline; }
+.ln-cap .d, .ln-cap .x { display: none; }
+.ln-cap .x { color: var(--ink-3); font-size: 11px; }
+.ln-cap .x:empty, .ln-cap .d:empty { display: none; }
+.ln-o.full:hover .ln-cap .d, .ln-o.full:focus-visible .ln-cap .d,
+.ln-o.lead .ln-cap .d, .ln-o.win .ln-cap .d, .ln-o.full.mono .ln-cap .d { display: inline; }
+.ln-o.win .ln-cap { bottom: calc(100% + 22px - var(--capdrop, 0px)); }
+.ln-o.dot .ln-cap { opacity: 0; transform: translateX(-50%) scale(.3889); transition: opacity var(--t-ui, 160ms) linear; }
+.ln-o.dot:hover .ln-cap, .ln-o.dot:focus-visible .ln-cap {
+  opacity: 1; padding: 3px 7px; border-radius: 6px; background: var(--paper); box-shadow: 0 0 0 1px var(--hair);
+}
+.ln-o.dot:hover .ln-cap .d, .ln-o.dot:focus-visible .ln-cap .d,
+.ln-o.dot:hover .ln-cap .x, .ln-o.dot:focus-visible .ln-cap .x { display: inline; }
+.ln-o.win .ln-cap .p { font-size: 13px; }
+
+/* shelf (start screen): hover tag '€24 · site · used' */
+.ln-shelfo .ln-cap { opacity: 0; transition: opacity var(--t-ui, 160ms) linear; }
+.ln-shelfo:hover .ln-cap, .ln-shelfo:focus-visible .ln-cap { opacity: 1; }
+.ln-shelfo .ln-cap .d { display: inline; }
+.ln-shelfo .ln-cap .p::after { content: " ·"; color: var(--ink-3); }
+
+/* focus ring: quiet, follows the plate */
+.ln-o:focus-visible .ln-pic { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 10px; }
+.ln-o.dot:focus-visible .ln-pic { border-radius: 50%; outline-width: 1px; }
+
+/* rough ink circle around the winner (draws in 600 ms) */
+.ln-ring {
+  position: absolute; left: 50%; bottom: -16px;
+  width: calc(var(--fw) + 56px); height: calc(var(--fh) - var(--capdrop, 0px) + 40px);
+  transform: translateX(-50%); overflow: visible; pointer-events: none;
+  fill: none; stroke: var(--ink); stroke-width: 1.8; opacity: 0;
+}
+.ln-ring use { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.ln-o.ringed .ln-ring { opacity: 1; }
+.ln-o.ringed .ln-ring use { stroke-dashoffset: 0; transition: stroke-dashoffset 600ms var(--ease); }
+.ln-o.dot .ln-ring { width: 56px; height: 48px; bottom: -24px; }
+
+/* late arrivals: small, labelled, never move the circle */
+.ln-o.late { --fw: 20px; --fh: 20px; }
+/* the word only where nothing stands next to it (line.js sets .late-lab); full plates never carry it */
+.ln-o.late.late-lab::after {
+  content: "late"; position: absolute; left: 0; bottom: calc(var(--lvl) * 1px + 14px);
+  transform: translateX(-50%); font: 400 10px/1 var(--mono); color: var(--ink-3); pointer-events: none;
+}
+.ln-o.late.full { --fw: 64px; --fh: 64px; }
+
+/* watch tag: right of your price goes 35% grey */
+.ln-o.dim .ln-face { opacity: .35; filter: grayscale(1); }
+.ln-o .ln-face { filter: none; }
+
+/* the extra mock-shop object of the finale */
+.ln-o.ln-extra.full { --fw: 96px; --fh: 96px; }
+
+/* set aside tray */
+.ln-tray {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px;
+  margin: 6px 0 0; font: 400 13px/1.4 var(--sans); color: var(--ink-2);
+}
+.ln-tray[hidden] { display: none; }
+.ln-tray-h { color: var(--ink-3); font-weight: 500; }
+.ln-x2 { font: 400 11px var(--mono); color: var(--ink-3); }
+.ln-tray-h::after { content: ":"; }
+.ln-tray-l { display: contents; }
+.ln-tray-i {
+  display: inline-flex; align-items: center; gap: 6px; padding: 2px 4px 2px 2px; margin: 0;
+  border: 0; background: none; color: inherit; font: inherit; cursor: pointer; border-radius: 6px;
+}
+.ln-tray-i:hover { color: var(--ink); }
+.ln-tray-i img, .ln-tray-i i {
+  width: 24px; height: 24px; border-radius: 50%; object-fit: cover; background: var(--stage);
+  display: inline-grid; place-items: center; font: normal 400 13px/1 var(--serif); color: var(--ink-2);
+  opacity: .8;
+}
+.ln-tray-i i:empty::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); }
+.ln-tray-i .ln-q { font-family: var(--mono); font-size: 12px; color: var(--ink); }
+.ln-tray-i + .ln-tray-i::before { content: "·"; color: var(--ink-3); margin-right: 8px; }
+
+/* axis label row: [ Price on the tag | What you actually pay ]  € a month: …            dearer → */
+.ln-axislab {
+  position: relative; display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  min-height: 34px; margin-top: -34px; font: 400 13px/22px var(--sans); color: var(--ink-2);
+  pointer-events: none;
+}
+.ln-labs { position: relative; flex: 1 1 auto; height: 22px; min-width: 0; }
+.ln-lab { position: absolute; left: 0; top: 0; white-space: nowrap; opacity: 0; transition: opacity 450ms linear; }
+.ln-switch {
+  display: inline-flex; flex: none; padding: 3px; gap: 2px; border-radius: var(--r-pill);
+  background: var(--stage); box-shadow: inset 0 0 0 1px var(--hair); pointer-events: auto;
+}
+.ln-switch[hidden] { display: none; }
+.ln-switch button {
+  border: 0; margin: 0; padding: 0 14px; height: 30px; border-radius: var(--r-pill);
+  background: none; color: var(--ink-2); font: 500 13px/30px var(--sans); cursor: pointer; white-space: nowrap;
+  transition: background var(--t-ui) var(--ease), color var(--t-ui) var(--ease), box-shadow var(--t-ui) var(--ease);
+}
+.ln-switch button:hover:not(:disabled) { color: var(--ink); }
+.ln-switch button[aria-pressed="true"] { background: var(--paper); color: var(--ink); box-shadow: 0 1px 2px rgba(28,27,24,.12), 0 0 0 1px var(--hair); }
+.ln-switch button:disabled { cursor: default; opacity: .55; }
+.ln-switch button:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.ln-hasswitch .ln-lab { color: var(--ink-3); font-size: 12px; }
+/* the Turn explains itself once, big enough to read, then gets out of the way */
+.ln-turncap .ln-caption { color: var(--ink-2); font-size: 15px; }
+/* mobile: "+9 dearer" */
+.ln-more {
+  display: block; margin: 4px 0 8px 72px; padding: 0 14px; height: 36px; border-radius: var(--r-pill);
+  border: 1px solid var(--hair); background: none; color: var(--ink-2); font: 500 13px/34px var(--sans); cursor: pointer;
+}
+.ln-more[hidden] { display: none; }
+.ln-lab.on { opacity: 1; }
+.ln-dearer { margin-left: auto; color: var(--ink-3); }
+[data-ln-phase="start"] .ln-axislab { justify-content: center; }
+[data-ln-phase="start"] .ln-lab { left: 50%; transform: translateX(-50%); color: var(--ink-3); }
+
+/* tag view while dragging the watch tag (pill is B4's) */
+.ln-tagview .ln-ghosts { opacity: 0; }
+
+@keyframes ln-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- phones: the line turns vertical (cheapest at the top) ---------- */
+.ln-v .ln-stage { height: auto; min-height: 80px; }
+.ln-v .ln-o { width: 100%; }
+.ln-v .ln-o.full { --fw: 64px; --fh: 64px; }
+.ln-v .ln-o.dot { --fw: 32px; --fh: 32px; }
+.ln-v .ln-o.late { --fw: 32px; --fh: 32px; }
+.ln-v .ln-o.ln-shelfo { --fw: 64px; --fh: 64px; }
+.ln-v .ln-face { left: 72px; top: 0; bottom: auto; transform: none; transform-origin: 0 50%; }
+.ln-v .ln-o.dot .ln-face { left: 88px; bottom: auto; }
+.ln-v .ln-o.dot:hover, .ln-v .ln-o.dot:focus-visible, .ln-v .ln-o.full:hover { --s: 1; }
+.ln-v .ln-cap, .ln-v .ln-o.dot .ln-cap, .ln-v .ln-shelfo .ln-cap {
+  left: calc(100% + 12px); right: auto; bottom: auto; top: 50%;
+  transform: translateY(-50%); opacity: 1; padding: 0; background: none; box-shadow: none;
+  display: grid; gap: 1px; justify-items: start; width: calc(100vw - 72px - var(--fw) - 12px - 40px);
+}
+.ln-v .ln-o.dot .ln-cap { left: calc(100% + 28px); width: calc(100vw - 88px - var(--fw) - 28px - 40px); }
+.ln-v .ln-cap .p { font-size: 14px; }
+.ln-v .ln-cap .d, .ln-v .ln-cap .x { display: block; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.ln-v .ln-shelfo .ln-cap .p::after { content: none; }
+.ln-v .ln-val {
+  display: block; position: absolute; left: 0; width: 50px; top: calc(var(--fh) / 2 - 9px);
+  text-align: right; font: 500 12px/18px var(--mono); color: var(--ink-2); white-space: nowrap;
+  border-radius: 3px; font-variant-numeric: tabular-nums;
+}
+.ln-v .ln-val::after { content: ""; position: absolute; left: 56px; top: 9px; width: 8px; height: 1px; background: var(--ink); }
+.ln-v .ln-o.lead .ln-val { background: var(--accent); color: var(--ink); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ln-v .ln-o.lead .ln-val { color: #1C1B18; } }
+:root[data-theme="dark"] .ln-v .ln-o.lead .ln-val { color: #1C1B18; }
+.ln-v .ln-stem, .ln-v .ln-shadow { display: none; }
+.ln-v .ln-o.late::after { content: none; }
+.ln-v .ln-ring { bottom: -10px; width: calc(var(--fw) + 22px); height: calc(var(--fh) + 22px); }
+.ln-v .ln-axislab { margin-top: 4px; }
+.ln-v .ln-lab { position: static; white-space: normal; display: none; }
+.ln-v .ln-lab.on { display: block; }
+[data-ln-phase="start"].ln-v .ln-lab { transform: none; text-align: center; }
+.ln-val { display: none; }
+
+/* ---------- reduced motion: positions jump, only opacity changes ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ln-face, .ln-stem, .ln-hlg { transition: opacity 160ms linear !important; }
+  .ln-o.ringed .ln-ring use { transition: none; }
+}
+.ln-o.ln-off { visibility: hidden; pointer-events: none; }
+.ln-o.full.nocap .ln-cap { opacity: 0; transition: opacity var(--t-ui, 160ms) linear; }
+.ln-o.full.nocap:hover .ln-cap, .ln-o.full.nocap:focus-visible .ln-cap { opacity: 1; }
+.ln-arc { transition: opacity 1200ms linear; }
+/* after the slide only the pick's and the cheap tag's arcs stay, quiet */
+.ln-ghosts .gone { opacity: 0; }
+.ln-calm .ln-arc.keep { opacity: .4; }
+.ln-v .ln-o.full.nocap .ln-cap { opacity: 1; }
+.ln-v .ln-o.win .ln-cap { bottom: auto; }
+.ln-v .ln-cap { display: block; line-height: 1.25; }
+.ln-v .ln-cap .p { display: block; }
+.ln-v .ln-cap .d, .ln-v .ln-cap .x { display: inline; }
+.ln-v .ln-cap .d + .x::before { content: " · "; }
+.ln-v .ln-cap { white-space: normal; overflow: hidden; display: -webkit-box !important; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.ln-v .ln-cap .p { white-space: nowrap; }
+.ln-v .ln-o.dot .ln-cap { transform: translateY(-50%) !important; }
+.ln-o.ln-gone { visibility: hidden; pointer-events: none; }
+.ln-v .ln-o .ln-cap, .ln-v .ln-o.dot .ln-cap, .ln-v .ln-shelfo .ln-cap { display: block; }
+.ln-v .ln-cap .x:empty { display: none; }
+.ln-v .ln-o.win .ln-cap { left: calc(100% + 22px); }
+
+/* ---------- phones: one number per row, the word instead of the badge, the switch on top ---------- */
+.ln-v { display: flex; flex-direction: column; }
+.ln-v .ln-caption { order: -2; }
+.ln-v .ln-axislab { order: -1; margin: 0 0 6px; flex-wrap: wrap; min-height: 0; }
+.ln-v .ln-switch button { padding: 0 12px; font-size: 12.5px; }
+.ln-v .ln-labs { flex-basis: 100%; height: auto; }
+.ln-v .ln-val { color: transparent !important; background: none !important; }
+.ln-v .ln-cond { display: none; }
+.ln-v .ln-o.lead .ln-cap .p, .ln-v .ln-o.win .ln-cap .p { display: block; width: fit-content; margin-bottom: 1px; background: var(--accent); color: #1C1B18; padding: 0 4px; border-radius: 3px; }
+
+.ln-o.mono .ln-pic .wm.long { font-size: 13px; }
+/* caption moved beside its figure when there is no room above it */
+.ln-o.full.capside .ln-cap { left: calc(100% + 6px); bottom: calc(var(--fh) / 2 - 8px); transform: none; }
+.ln-v .ln-o.full.capside .ln-cap { left: calc(100% + 12px); bottom: auto; transform: translateY(-50%); }
+
+/* phones: a late row says "late" in its caption, like its condition and tag */
+
+/* ---------- pages being read: a small pulsing dot each, waiting at the dearer end ---------- */
+.ln-reading { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.ln-rd {
+  position: absolute; left: -3.5px; top: -3.5px; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ink-2); opacity: 0; animation: ln-rd-in 300ms linear forwards;
+}
+.ln-rd.in { transition: transform 300ms var(--ease), opacity 300ms linear; }
+.ln-rd[hidden] { display: none; }
+.ln-rd::after {
+  content: ""; position: absolute; inset: -4px; border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--ink-3); opacity: 0;
+  animation: ln-rd-pulse 1600ms var(--ease) infinite;
+}
+.ln-rd.out { animation: none; opacity: 0; }
+.ln-rd.took { animation: none; opacity: 0; transition: opacity 140ms linear; }
+@keyframes ln-rd-in { to { opacity: .85; } }
+@keyframes ln-rd-pulse { 0% { transform: scale(.5); opacity: .7; } 70%, 100% { transform: scale(1.5); opacity: 0; } }
+
+/* ---------- hold to split: price, + import & fees, − resale, on the axis ---------- */
+.ln-o { -webkit-touch-callout: none; }
+.ln-sp-a { fill: var(--ink); }
+.ln-sp-b { fill: var(--ink-2); opacity: .55; }
+.ln-sp-c { fill: none; stroke: var(--ok); stroke-width: 1.2; stroke-dasharray: 3 2; }
+.ln-sp-n { stroke: var(--ink); stroke-width: 1.5; }
+.ln-sp-t { font: 400 11px var(--mono); fill: var(--ink-2); font-variant-numeric: tabular-nums; }
+.ln-sp-t.n { fill: var(--ink); font-weight: 500; }
+.ln-ticks, .ln-band, .ln-ghosts, .ln-notch { transition: opacity var(--t-ui, 160ms) linear; }
+.ln-splitting .ln-ticks, .ln-splitting .ln-band, .ln-splitting .ln-ghosts, .ln-splitting .ln-notch { opacity: 0; }
+.ln-splitting .ln-o:not(.splitting) .ln-face { opacity: .22; }
+.ln-splitting .ln-o:not(.splitting) .ln-stem, .ln-splitting .ln-o:not(.splitting).raised::before { opacity: .22; }
+.ln-v.ln-splitting .ln-o.splitting .ln-cap { opacity: 0; }
+.ln-v.ln-splitting .ln-o:not(.splitting) .ln-cap { opacity: .3; }
+.ln-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ln-rd, .ln-rd::after { animation: none !important; }
+  .ln-rd { opacity: .85; }
+  .ln-rd.in { transition: opacity 160ms linear; }
+}
+
+/* ---------- round 5 ---------- */
+/* the Turn: no caption shows while objects fly; they fade in once everything has landed */
+.ln-turning .ln-o .ln-cap { opacity: 0 !important; visibility: hidden; transition: none; }
+.ln-o .ln-cap { transition: opacity 160ms linear; }
+/* a dot's tiny scaled caption never shows mid-transition */
+.ln-o.dot:not(:hover):not(:focus-visible) .ln-cap { visibility: hidden; }
+.ln-v .ln-o.dot .ln-cap { visibility: inherit; }
+/* the cheap tag that loses is the second half of the Turn: full ink on its words */
+.ln-o.cheapest .ln-face { opacity: .7; }
+.ln-o.cheapest .ln-cap, .ln-o.cheapest .ln-cap .d { color: var(--ink); opacity: 1; }
+
+/* dark: dimmed objects and dot plates must stay visible on a dark page */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ln-o.dim .ln-face { opacity: .5; filter: grayscale(1) brightness(1.6); }
+  :root:not([data-theme="light"]) .ln-o.dot .ln-pic { background: color-mix(in srgb, var(--ink) 14%, var(--paper)); box-shadow: 0 0 0 1px var(--hair); }
+  :root:not([data-theme="light"]) .ln-shadow { background: radial-gradient(ellipse at center, rgba(238,234,225,.10) 0%, rgba(238,234,225,.04) 40%, transparent 70%); }
+}
+:root[data-theme="dark"] .ln-o.dim .ln-face { opacity: .5; filter: grayscale(1) brightness(1.6); }
+:root[data-theme="dark"] .ln-o.dot .ln-pic { background: color-mix(in srgb, var(--ink) 14%, var(--paper)); box-shadow: 0 0 0 1px var(--hair); }
+:root[data-theme="dark"] .ln-shadow { background: radial-gradient(ellipse at center, rgba(238,234,225,.10) 0%, rgba(238,234,225,.04) 40%, transparent 70%); }
+
+/* ---------- polish: tidy columns, phone captions ---------- */
+/* a bead tucked behind its neighbour on the axis is a small neutral pip until you point at it */
+.ln-o.dot.tuck:not(:hover):not(:focus-visible) { --s: .36; }
+.ln-o.dot.tuck:not(:hover):not(:focus-visible) .ln-pic { background: var(--ink-3); box-shadow: 0 0 0 2px var(--paper); padding: 0; }
+.ln-o.dot.tuck:not(:hover):not(:focus-visible) .ln-pic > *,
+.ln-o.dot.tuck:not(:hover):not(:focus-visible) .ln-pic::after { opacity: 0; }
+.ln-v .ln-o.dot.tuck { --s: 1; }
+.ln-v .ln-o.dot.tuck .ln-pic { background: var(--stage); box-shadow: 0 0 0 1px var(--hair), 0 0 0 2.5px var(--paper); padding: 2px; }
+.ln-v .ln-o.dot.tuck .ln-pic > *, .ln-v .ln-o.dot.tuck .ln-pic::after { opacity: 1; }
+/* phones: every row says its price, beads included */
+.ln-v .ln-o.dot:not(:hover):not(:focus-visible) .ln-cap { visibility: inherit; opacity: 1; }
+/* a raised cutout's stem is a whisper, its foot sits on the axis */
+.ln-o.full.raised .ln-stem { opacity: .5; }
+
+/* dark mode: the shelf's darkest cutouts (a black camera, a black bike) get a faint warm rim so they
+   don't sink into the night paper */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ln-shelfo .ln-pic img { filter: drop-shadow(0 0 1px rgba(255, 248, 235, .45)) drop-shadow(0 0 8px rgba(255, 248, 235, .10)); }
+}
+:root[data-theme="dark"] .ln-shelfo .ln-pic img { filter: drop-shadow(0 0 1px rgba(255, 248, 235, .45)) drop-shadow(0 0 8px rgba(255, 248, 235, .10)); }
+
+/* ---------- ledger: every offer, ranked, under the line (desktop; the phone's line is already a list) ---------- */
+#ledger { margin: 32px 0 8px; }
+#ledger[hidden] { display: none; }
+.lg-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0 0 10px; }
+.lg-h { margin: 0; font: 500 13px/1.4 var(--sans); color: var(--ink-2); }
+.lg-h span { font-weight: 400; color: var(--ink-3); }
+/* all · sure only */
+.lg-f { display: inline-flex; padding: 2px; gap: 2px; border-radius: var(--r-pill); background: var(--stage); box-shadow: inset 0 0 0 1px var(--hair); }
+.lg-f button {
+  border: 0; margin: 0; padding: 0 10px; height: 24px; border-radius: var(--r-pill); background: none;
+  font: 500 12px/24px var(--sans); color: var(--ink-3); cursor: pointer;
+  transition: background var(--t-ui) var(--ease), color var(--t-ui) var(--ease);
+}
+.lg-f button:hover { color: var(--ink); }
+.lg-f button[aria-pressed="true"] { background: var(--paper); color: var(--ink); box-shadow: 0 0 0 1px var(--hair); }
+.lg-l { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--hair); }
+.lg-l li { border-bottom: 1px solid var(--hair); }
+/* # · photo · listing (title, then shop) · condition · tag · all in · note */
+.lg-r {
+  display: grid; grid-template-columns: 28px 96px minmax(0, 1fr) 88px 72px 96px 172px;
+  align-items: center; column-gap: 14px; width: 100%; min-height: 108px; padding: 6px 8px 6px 4px; margin: 0;
+  border: 0; background: none; color: var(--ink-2); font: 400 13px/1.3 var(--sans); text-align: left; cursor: pointer;
+  transition: background var(--t-ui) var(--ease);
+}
+.lg-head { min-height: 0; padding-top: 0; padding-bottom: 6px; cursor: default; font: 400 12px/1.3 var(--sans); color: var(--ink-3); }
+.lg-head .lg-tag, .lg-head .lg-tc { font: 400 12px/1.3 var(--sans); color: var(--ink-3); }
+.lg-l .lg-r:hover { background: var(--paper-2, var(--receipt)); color: var(--ink); }
+.lg-r:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.lg-r.pick { box-shadow: inset 2px 0 0 var(--accent); }
+.lg-n { font: 400 11px var(--mono); color: var(--ink-3); text-align: right; }
+.lg-pic { display: block; width: 96px; height: 96px; }
+.lg-pic > img, .lg-pic > i {
+  width: 100%; height: 100%; border-radius: 10px; object-fit: cover; background: var(--stage);
+  box-shadow: inset 0 0 0 1px var(--hair);
+}
+/* the listing: its title first (what you'd buy), the shop on a quieter line under it */
+.lg-main { min-width: 0; display: grid; gap: 5px; justify-items: start; }
+.lg-ti {
+  min-width: 0; max-width: 100%; color: var(--ink); font: 500 14px/1.35 var(--sans); text-wrap: pretty;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.lg-t { min-width: 0; max-width: 100%; display: flex; align-items: center; gap: 4px 10px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-2); }
+.lg-s { display: inline-flex; align-items: center; gap: 7px; max-width: 100%; white-space: nowrap; }
+.lg-d { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.lg-cm { display: none; color: var(--ink-3); }
+.lg-t .tmark { font-size: 11px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.lg-c { color: var(--ink-3); font-size: 12.5px; }
+.lg-tag, .lg-tc { font: 400 12px var(--mono); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lg-tag { color: var(--ink-3); }
+.lg-tc { font: 500 13px var(--mono); color: var(--ink); }
+.lg-x { font-size: 12px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lg-x i { font-style: normal; color: var(--flag); }
+/* the second group: cheaper maybe, but we cannot be sure of the price (never the pick) */
+.lg-l .lg-sep {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 18px 8px 8px 44px;
+  border-bottom: 1px solid var(--hair); font: 400 12px/1.4 var(--sans); color: var(--ink-3);
+}
+.lg-sep b { font-weight: 500; color: var(--ink-2); }
+.lg-sep + li .lg-r, .lg-sep ~ li .lg-r { color: var(--ink-3); }
+.lg-sep ~ li .lg-ti { color: var(--ink-2); }
+.lg-sep ~ li .lg-tc { color: var(--ink-2); font-weight: 400; }
+/* flags in the list: no fade-in (rows re-render), full strength; the dotted rule alone marks a guess */
+.lg-s .flag img { animation: none; opacity: 1 !important; }
+.lg-x b { font-weight: 500; color: var(--ink); background: linear-gradient(transparent 55%, var(--accent) 55%); }
+.lg-r.unsure .lg-tc { color: var(--ink-2); }
+.lg-more {
+  margin: 8px 0 0; padding: 4px 0; border: 0; background: none; color: var(--ink-2); font: 400 13px var(--sans);
+  cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--hair);
+}
+.lg-more:hover { color: var(--ink); }
+@media (max-width: 1023px) {
+  .lg-r { grid-template-columns: 24px 88px minmax(0, 1fr) 76px 64px 92px 140px; column-gap: 12px; min-height: 100px; }
+  .lg-pic { width: 88px; height: 88px; }
+}
+/* phones: the ledger is the full list of listings too (listings.css lays the rows out) */
+html.agent-on #ledger { opacity: 0; pointer-events: none; }
+/* dark: a thin yellow underline under "the pick", so the light ink stays readable */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .lg-x b { background: linear-gradient(transparent 82%, var(--accent) 82%); } }
+:root[data-theme="dark"] .lg-x b { background: linear-gradient(transparent 82%, var(--accent) 82%); }
+
+/* trust mark in the ledger row and the phone caption */
+.ln-cap .x .tmark { display: inline; font-size: 11px; }
+.ln-cap .x .tmark::before { display: inline-block; margin-right: 4px; vertical-align: 1px; }
+
+/* ---------- round A: the toolbar under the axis, the tray chip, flags on the plates ---------- */
+/* [switch] [axis caption ………] [not counted (1) ▸] [160 px kept clear for #tag] */
+#line:not(.ln-v):not([data-ln-phase="start"]) .ln-axislab {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; column-gap: 16px; align-items: center;
+}
+@media (min-width: 900px) { #line:not(.ln-v):not([data-ln-phase="start"]) .ln-axislab { padding-right: 160px; } }
+#line:not(.ln-v) .ln-switch { grid-column: 1; grid-row: 1; }
+#line:not(.ln-v) .ln-labs { grid-column: 2; grid-row: 1; overflow: hidden; }
+#line:not(.ln-v) .ln-lab { right: 0; overflow: hidden; text-overflow: ellipsis; }
+/* start screen: the caption is centred under the whole line (no right edge, or the box spans half and the text sits left) */
+#line[data-ln-phase="start"]:not(.ln-v) .ln-lab { right: auto; }
+#line:not(.ln-v) .ln-trayc { grid-column: 3; grid-row: 1; }
+.ln-dearer[hidden] { display: none; }
+.ln-dearer-t { font: 400 12px var(--sans); fill: var(--ink-3); }
+#app[data-phase="finale"] .ln-dearer-t { opacity: 0; }
+
+.ln-trayc {
+  pointer-events: auto; display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px 0 12px;
+  border: 1px solid var(--hair); border-radius: var(--r-pill); background: none; color: var(--ink-2);
+  font: 500 12px/26px var(--sans); white-space: nowrap; cursor: pointer;
+  transition: color var(--t-ui) var(--ease), border-color var(--t-ui) var(--ease), background var(--t-ui) var(--ease);
+}
+.ln-trayc[hidden] { display: none; }
+.ln-trayc::after { content: "▸"; font-size: 10px; color: var(--ink-3); transition: transform var(--t-ui) var(--ease); }
+.ln-trayc.open::after { transform: rotate(90deg); }
+.ln-trayc:hover, .ln-trayc.open { color: var(--ink); border-color: var(--ink-3); }
+.ln-trayc:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+/* the list itself, opened inline under the toolbar */
+#line .ln-tray {
+  margin: 10px 0 0; padding: 8px 12px; border-radius: 10px; background: var(--paper-2, var(--stage));
+  box-shadow: inset 0 0 0 1px var(--hair); animation: ln-fade 160ms linear both;
+}
+#line .ln-tray-h { display: none; }
+.ln-v .ln-tray { order: -1; margin: 0 0 8px; }
+.ln-v .ln-trayc { order: 2; }
+
+/* the flag: a 14 px country flag in the plate's top-left corner (full plates; dots show it when they grow) */
+.ln-flag { position: absolute; left: 6px; top: 6px; z-index: 2; line-height: 0; }
+.ln-flag:empty { display: none; }
+.ln-flag .flag { padding: 2px; margin: -2px; border-radius: 3px; background: color-mix(in srgb, var(--paper) 70%, transparent); }
+.ln-o.mono .ln-flag { left: 5px; top: 5px; }
+.ln-o.late .ln-flag { display: none; }
+.ln-o.dot .ln-flag { display: none; left: -1px; top: -1px; transform: scale(.3889); transform-origin: 0 0; }
+.ln-o.dot:hover .ln-flag, .ln-o.dot:focus-visible .ln-flag { display: block; }
+.ln-o.dot .ln-flag:empty { display: none !important; }
+.ln-shelfo .ln-flag, .ln-extra .ln-flag { display: none; }
+.ln-cap .f { display: none; }
+/* phones: the flag sits before the domain in the row's caption */
+.ln-v .ln-flag { display: none !important; }
+.ln-v .ln-cap .f:not(:empty) { display: inline; margin-right: 5px; }
+.ln-v .ln-cap .f .flag { vertical-align: -1px; }
+.ln-v .ln-cap .f + .d { display: inline; }
+/* phones: switch and the "your price" pill share one row; the tray chip sits under the axis words */
+.ln-v .ln-axislab { column-gap: 8px; }
+.ln-v .ln-switch button { padding: 0 10px; }
+.ln-v .ln-trayc { margin-top: 6px; }
+
+/* the start line's objects: muted like the browse grid below (one family), colour comes back on hover */
+.ln-shelfo .ln-pic img { filter: grayscale(1) sepia(.12) contrast(1.02) brightness(1.04); transition: filter 400ms var(--ease); }
+.ln-shelfo:hover .ln-pic img, .ln-shelfo:focus-visible .ln-pic img { filter: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ln-shelfo .ln-pic img { filter: grayscale(1) sepia(.12) drop-shadow(0 0 1px rgba(255, 248, 235, .45)) drop-shadow(0 0 8px rgba(255, 248, 235, .10)); }
+  :root:not([data-theme="light"]) .ln-shelfo:hover .ln-pic img { filter: drop-shadow(0 0 1px rgba(255, 248, 235, .45)); }
+}
+:root[data-theme="dark"] .ln-shelfo .ln-pic img { filter: grayscale(1) sepia(.12) drop-shadow(0 0 1px rgba(255, 248, 235, .45)) drop-shadow(0 0 8px rgba(255, 248, 235, .10)); }
+:root[data-theme="dark"] .ln-shelfo:hover .ln-pic img { filter: drop-shadow(0 0 1px rgba(255, 248, 235, .45)); }
+.ln-v .ln-o.dot .ln-cap { -webkit-line-clamp: 2; }
+/* while hunting, the verdict headline already says who leads (in the answer's place): no second, faint copy */
+#app[data-phase="hunting"] #line .ln-caption { visibility: hidden; }
+
+/* ---------- round B: a dense line (hundreds of offers) ----------
+   The story's plates and the cheapest few beads keep their photos; every other offer is a 7 px pip, stacked
+   per column into a dot plot, so the shape of the market shows. Hover or focus grows a pip into its photo. */
+.ln-o.dot.pip { z-index: 1; }
+.ln-o.dot.pip:not(:hover):not(:focus-visible) { --s: .25; }
+.ln-o.dot.pip:not(:hover):not(:focus-visible) .ln-pic { background: var(--ink-3); box-shadow: 0 0 0 1.5px var(--paper); padding: 0; }
+.ln-o.dot.pip:not(:hover):not(:focus-visible) .ln-pic > *,
+.ln-o.dot.pip:not(:hover):not(:focus-visible) .ln-pic::after { opacity: 0; }
+.ln-o.dot.pip.unsure-pip:not(:hover) .ln-pic { background: color-mix(in srgb, var(--ink-3) 55%, var(--paper)); }
+.ln-dense .ln-o.dot.pip .ln-face { transition: transform 200ms var(--ease); }
