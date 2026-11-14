@@ -1,0 +1,1739 @@
+[
+{
+"name": "Vinted",
+"market": "Selected European markets",
+"group": "Multi-market",
+"type": "General resale",
+"cats": "Fashion, home, electronics and more",
+"url": "https://www.vinted.com/",
+"domain": "vinted.com"
+},
+{
+"name": "eBay",
+"market": "Selected European markets",
+"group": "Multi-market",
+"type": "General resale",
+"cats": "General goods and auctions",
+"url": "https://www.ebay.com/",
+"domain": "ebay.com"
+},
+{
+"name": "Facebook Marketplace",
+"market": "Selected European markets",
+"group": "Multi-market",
+"type": "Classifieds",
+"cats": "General goods and local pickup",
+"url": "https://www.facebook.com/marketplace/",
+"domain": "facebook.com"
+},
+{
+"name": "Wallapop",
+"market": "Spain, Italy, Portugal",
+"group": "Multi-market",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.wallapop.com/",
+"domain": "wallapop.com"
+},
+{
+"name": "Shpock",
+"market": "UK, Germany, Austria",
+"group": "Multi-market",
+"type": "Classifieds",
+"cats": "General goods and local pickup",
+"url": "https://www.shpock.com/",
+"domain": "shpock.com"
+},
+{
+"name": "Etsy Vintage",
+"market": "Selected European markets",
+"group": "Multi-market",
+"type": "Vintage and auctions",
+"cats": "Vintage fashion, decor and collectibles",
+"url": "https://www.etsy.com/c/vintage",
+"domain": "etsy.com"
+},
+{
+"name": "Catawiki",
+"market": "Selected European markets",
+"group": "Multi-market",
+"type": "Vintage and auctions",
+"cats": "Collectibles, art, watches, design and more",
+"url": "https://www.catawiki.com/",
+"domain": "catawiki.com"
+},
+{
+"name": "Auctionet",
+"market": "Selected European markets",
+"group": "Multi-market",
+"type": "Vintage and auctions",
+"cats": "Furniture, art and collectibles",
+"url": "https://auctionet.com/en/",
+"domain": "auctionet.com"
+},
+{
+"name": "Gumtree",
+"market": "United Kingdom",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.gumtree.com/",
+"domain": "gumtree.com"
+},
+{
+"name": "Preloved",
+"market": "United Kingdom",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.preloved.co.uk/",
+"domain": "preloved.co.uk"
+},
+{
+"name": "Freeads",
+"market": "United Kingdom",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.freeads.co.uk/uk/for-sale/",
+"domain": "freeads.co.uk"
+},
+{
+"name": "Friday-Ad",
+"market": "United Kingdom",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.friday-ad.co.uk/",
+"domain": "friday-ad.co.uk"
+},
+{
+"name": "Adverts.ie",
+"market": "Ireland",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.adverts.ie/",
+"domain": "adverts.ie"
+},
+{
+"name": "DoneDeal",
+"market": "Ireland",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods and vehicles",
+"url": "https://www.donedeal.ie/",
+"domain": "donedeal.ie"
+},
+{
+"name": "Leboncoin",
+"market": "France",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.leboncoin.fr/",
+"domain": "leboncoin.fr"
+},
+{
+"name": "ParuVendu",
+"market": "France",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.paruvendu.fr/mondebarras/",
+"domain": "paruvendu.fr"
+},
+{
+"name": "Rakuten France",
+"market": "France",
+"group": "Western Europe",
+"type": "General resale",
+"cats": "General goods, media and electronics",
+"url": "https://fr.shopping.rakuten.com/",
+"domain": "fr.shopping.rakuten.com"
+},
+{
+"name": "Label Emmaüs",
+"market": "France",
+"group": "Western Europe",
+"type": "General resale",
+"cats": "Charity resale, home, fashion and books",
+"url": "https://www.label-emmaus.co/",
+"domain": "label-emmaus.co"
+},
+{
+"name": "Easy Cash",
+"market": "France",
+"group": "Western Europe",
+"type": "Resale retailer",
+"cats": "Electronics, games and used goods",
+"url": "https://www.easycash.fr/",
+"domain": "easycash.fr"
+},
+{
+"name": "La Bourse aux Livres",
+"market": "France",
+"group": "Western Europe",
+"type": "Resale retailer",
+"cats": "Books",
+"url": "https://labourseauxlivres.fr/",
+"domain": "labourseauxlivres.fr"
+},
+{
+"name": "2dehands / 2ememain",
+"market": "Belgium",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.2dehands.be/",
+"domain": "2dehands.be"
+},
+{
+"name": "Marktplaats",
+"market": "Netherlands",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.marktplaats.nl/",
+"domain": "marktplaats.nl"
+},
+{
+"name": "Markt2",
+"market": "Netherlands",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://markt2.nl/",
+"domain": "markt2.nl"
+},
+{
+"name": "Het Goed",
+"market": "Netherlands",
+"group": "Western Europe",
+"type": "Resale retailer",
+"cats": "Charity and thrift goods",
+"url": "https://www.hetgoed.nl/nieuws/online-verkoop/",
+"domain": "hetgoed.nl"
+},
+{
+"name": "Luxembourg Expats Buy & Sell",
+"market": "Luxembourg",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.luxembourgexpats.lu/buy-sell",
+"domain": "luxembourgexpats.lu"
+},
+{
+"name": "LuxMaart",
+"market": "Luxembourg and nearby border regions",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://luxmaart.lu/recherche",
+"domain": "luxmaart.lu"
+},
+{
+"name": "JumbleGo",
+"market": "Luxembourg and nearby border regions",
+"group": "Western Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://jumblego.com/",
+"domain": "jumblego.com"
+},
+{
+"name": "Kleinanzeigen",
+"market": "Germany",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.kleinanzeigen.de/",
+"domain": "kleinanzeigen.de"
+},
+{
+"name": "Quoka",
+"market": "Germany",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.quoka.de/",
+"domain": "quoka.de"
+},
+{
+"name": "markt.de",
+"market": "Germany",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.markt.de/",
+"domain": "markt.de"
+},
+{
+"name": "Hood.de",
+"market": "Germany",
+"group": "Central Europe",
+"type": "General resale",
+"cats": "General goods and auctions",
+"url": "https://www.hood.de/",
+"domain": "hood.de"
+},
+{
+"name": "willhaben",
+"market": "Austria",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.willhaben.at/",
+"domain": "willhaben.at"
+},
+{
+"name": "Ricardo",
+"market": "Switzerland",
+"group": "Central Europe",
+"type": "General resale",
+"cats": "General goods and auctions",
+"url": "https://www.ricardo.ch/",
+"domain": "ricardo.ch"
+},
+{
+"name": "tutti.ch",
+"market": "Switzerland, Liechtenstein",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.tutti.ch/",
+"domain": "tutti.ch"
+},
+{
+"name": "anibis.ch",
+"market": "Switzerland",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.anibis.ch/",
+"domain": "anibis.ch"
+},
+{
+"name": "OLX Poland",
+"market": "Poland",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.olx.pl/",
+"domain": "olx.pl"
+},
+{
+"name": "Allegro Lokalnie",
+"market": "Poland",
+"group": "Central Europe",
+"type": "General resale",
+"cats": "General goods and auctions",
+"url": "https://allegrolokalnie.pl/",
+"domain": "allegrolokalnie.pl"
+},
+{
+"name": "Sprzedajemy.pl",
+"market": "Poland",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://sprzedajemy.pl/",
+"domain": "sprzedajemy.pl"
+},
+{
+"name": "Bazoš Czechia",
+"market": "Czechia",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.bazos.cz/",
+"domain": "bazos.cz"
+},
+{
+"name": "Sbazar",
+"market": "Czechia",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.sbazar.cz/",
+"domain": "sbazar.cz"
+},
+{
+"name": "Aukro",
+"market": "Czechia, Slovakia",
+"group": "Central Europe",
+"type": "General resale",
+"cats": "General goods, collectibles and auctions",
+"url": "https://aukro.cz/",
+"domain": "aukro.cz"
+},
+{
+"name": "Hyperinzerce",
+"market": "Czechia",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://hyperinzerce.cz/",
+"domain": "hyperinzerce.cz"
+},
+{
+"name": "Bazoš Slovakia",
+"market": "Slovakia",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.bazos.sk/",
+"domain": "bazos.sk"
+},
+{
+"name": "Bazar.sk",
+"market": "Slovakia",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.bazar.sk/",
+"domain": "bazar.sk"
+},
+{
+"name": "Jófogás",
+"market": "Hungary",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.jofogas.hu/",
+"domain": "jofogas.hu"
+},
+{
+"name": "Vatera",
+"market": "Hungary",
+"group": "Central Europe",
+"type": "General resale",
+"cats": "General goods and auctions",
+"url": "https://www.vatera.hu/",
+"domain": "vatera.hu"
+},
+{
+"name": "HardverApró",
+"market": "Hungary",
+"group": "Central Europe",
+"type": "Classifieds",
+"cats": "Computer hardware and electronics",
+"url": "https://hardverapro.hu/",
+"domain": "hardverapro.hu"
+},
+{
+"name": "Tori",
+"market": "Finland",
+"group": "Nordics",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.tori.fi/",
+"domain": "tori.fi"
+},
+{
+"name": "Huuto.net",
+"market": "Finland",
+"group": "Nordics",
+"type": "General resale",
+"cats": "General goods and auctions",
+"url": "https://www.huuto.net/",
+"domain": "huuto.net"
+},
+{
+"name": "Kiertonet",
+"market": "Finland",
+"group": "Nordics",
+"type": "Vintage and auctions",
+"cats": "Surplus goods, tools and equipment",
+"url": "https://kiertonet.fi/",
+"domain": "kiertonet.fi"
+},
+{
+"name": "Huutokaupat.com",
+"market": "Finland",
+"group": "Nordics",
+"type": "Vintage and auctions",
+"cats": "Equipment, vehicles and general goods",
+"url": "https://huutokaupat.com/",
+"domain": "huutokaupat.com"
+},
+{
+"name": "Kierrätyskeskus",
+"market": "Finland",
+"group": "Nordics",
+"type": "Resale retailer",
+"cats": "Second-hand household goods, furniture and clothing",
+"url": "https://kauppa.kierratyskeskus.fi/",
+"domain": "kauppa.kierratyskeskus.fi"
+},
+{
+"name": "Blocket",
+"market": "Sweden",
+"group": "Nordics",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.blocket.se/",
+"domain": "blocket.se"
+},
+{
+"name": "Tradera",
+"market": "Sweden",
+"group": "Nordics",
+"type": "General resale",
+"cats": "General goods, vintage and auctions",
+"url": "https://www.tradera.com/",
+"domain": "tradera.com"
+},
+{
+"name": "Plick",
+"market": "Sweden",
+"group": "Nordics",
+"type": "Specialist marketplace",
+"cats": "Fashion",
+"url": "https://plick.se/",
+"domain": "plick.se"
+},
+{
+"name": "Bukowskis",
+"market": "Sweden, Finland",
+"group": "Nordics",
+"type": "Vintage and auctions",
+"cats": "Art, design, furniture and watches",
+"url": "https://www.bukowskis.com/",
+"domain": "bukowskis.com"
+},
+{
+"name": "FINN Torget",
+"market": "Norway",
+"group": "Nordics",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.finn.no/recommerce/forsale/",
+"domain": "finn.no"
+},
+{
+"name": "Tise",
+"market": "Norway, Sweden, Denmark, Finland",
+"group": "Nordics",
+"type": "Specialist marketplace",
+"cats": "Fashion and lifestyle",
+"url": "https://tise.com/",
+"domain": "tise.com"
+},
+{
+"name": "Bookis",
+"market": "Norway",
+"group": "Nordics",
+"type": "Specialist marketplace",
+"cats": "Books",
+"url": "https://bookis.com/no",
+"domain": "bookis.com"
+},
+{
+"name": "DBA",
+"market": "Denmark",
+"group": "Nordics",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.dba.dk/",
+"domain": "dba.dk"
+},
+{
+"name": "GulogGratis",
+"market": "Denmark",
+"group": "Nordics",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.guloggratis.dk/",
+"domain": "guloggratis.dk"
+},
+{
+"name": "Reshopper",
+"market": "Denmark",
+"group": "Nordics",
+"type": "Specialist marketplace",
+"cats": "Children’s clothing and gear",
+"url": "https://reshopper.com/",
+"domain": "reshopper.com"
+},
+{
+"name": "Bland.is",
+"market": "Iceland",
+"group": "Nordics",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://bland.is/",
+"domain": "bland.is"
+},
+{
+"name": "Osta.ee",
+"market": "Estonia",
+"group": "Baltics",
+"type": "General resale",
+"cats": "General goods and auctions",
+"url": "https://www.osta.ee/",
+"domain": "osta.ee"
+},
+{
+"name": "Okidoki",
+"market": "Estonia",
+"group": "Baltics",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.okidoki.ee/",
+"domain": "okidoki.ee"
+},
+{
+"name": "Yaga Estonia",
+"market": "Estonia",
+"group": "Baltics",
+"type": "Specialist marketplace",
+"cats": "Fashion and lifestyle",
+"url": "https://www.yaga.ee/",
+"domain": "yaga.ee"
+},
+{
+"name": "SS.COM / SS.LV",
+"market": "Latvia",
+"group": "Baltics",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.ss.com/",
+"domain": "ss.com"
+},
+{
+"name": "Andele Mandele",
+"market": "Latvia",
+"group": "Baltics",
+"type": "Specialist marketplace",
+"cats": "Fashion and lifestyle",
+"url": "https://www.andelemandele.lv/",
+"domain": "andelemandele.lv"
+},
+{
+"name": "Dalder",
+"market": "Latvia",
+"group": "Baltics",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.dalder.lv/",
+"domain": "dalder.lv"
+},
+{
+"name": "Skelbiu.lt",
+"market": "Lithuania",
+"group": "Baltics",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.skelbiu.lt/",
+"domain": "skelbiu.lt"
+},
+{
+"name": "Alio.lt",
+"market": "Lithuania",
+"group": "Baltics",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.alio.lt/",
+"domain": "alio.lt"
+},
+{
+"name": "Milanuncios",
+"market": "Spain",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.milanuncios.com/",
+"domain": "milanuncios.com"
+},
+{
+"name": "todocoleccion",
+"market": "Spain",
+"group": "Southern Europe",
+"type": "Vintage and auctions",
+"cats": "Collectibles, antiques, books and art",
+"url": "https://www.todocoleccion.net/",
+"domain": "todocoleccion.net"
+},
+{
+"name": "Cash Converters Spain",
+"market": "Spain",
+"group": "Southern Europe",
+"type": "Resale retailer",
+"cats": "Electronics, games, tools and general goods",
+"url": "https://www.cashconverters.es/",
+"domain": "cashconverters.es"
+},
+{
+"name": "Micolet",
+"market": "Spain, cross-border shipping",
+"group": "Southern Europe",
+"type": "Resale retailer",
+"cats": "Fashion",
+"url": "https://www.micolet.com/",
+"domain": "micolet.com"
+},
+{
+"name": "OLX Portugal",
+"market": "Portugal",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.olx.pt/",
+"domain": "olx.pt"
+},
+{
+"name": "CustoJusto",
+"market": "Portugal",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.custojusto.pt/",
+"domain": "custojusto.pt"
+},
+{
+"name": "Subito",
+"market": "Italy",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.subito.it/",
+"domain": "subito.it"
+},
+{
+"name": "Bakeca",
+"market": "Italy",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.bakeca.it/",
+"domain": "bakeca.it"
+},
+{
+"name": "Mercatino dell’Usato",
+"market": "Italy",
+"group": "Southern Europe",
+"type": "Resale retailer",
+"cats": "Home, furniture and general goods",
+"url": "https://www.mercatinousato.com/",
+"domain": "mercatinousato.com"
+},
+{
+"name": "Mercatopoli",
+"market": "Italy",
+"group": "Southern Europe",
+"type": "Resale retailer",
+"cats": "General goods and home",
+"url": "https://www.mercatopoli.it/",
+"domain": "mercatopoli.it"
+},
+{
+"name": "LaPlaça",
+"market": "Andorra",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://laplaca.ad/segona-ma-andorra",
+"domain": "laplaca.ad"
+},
+{
+"name": "Vendoo.ad",
+"market": "Andorra",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://vendoo.ad/",
+"domain": "vendoo.ad"
+},
+{
+"name": "Click Monaco",
+"market": "Monaco",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.clickmonaco.com/en/ads",
+"domain": "clickmonaco.com"
+},
+{
+"name": "San Marino Market",
+"market": "San Marino",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods and auctions",
+"url": "https://sanmarinomarket.com/",
+"domain": "sanmarinomarket.com"
+},
+{
+"name": "Maltapark",
+"market": "Malta",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.maltapark.com/listings",
+"domain": "maltapark.com"
+},
+{
+"name": "Vendora",
+"market": "Greece, EU buyer delivery",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://vendora.gr/",
+"domain": "vendora.gr"
+},
+{
+"name": "XE.gr",
+"market": "Greece",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods and local listings",
+"url": "https://www.xe.gr/marketplace/",
+"domain": "xe.gr"
+},
+{
+"name": "Bazaraki",
+"market": "Cyprus",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.bazaraki.com/",
+"domain": "bazaraki.com"
+},
+{
+"name": "Agorani",
+"market": "Cyprus",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.agorani.com/",
+"domain": "agorani.com"
+},
+{
+"name": "MUXTI",
+"market": "Cyprus",
+"group": "Southern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://app.muxti.cy/",
+"domain": "app.muxti.cy"
+},
+{
+"name": "Bolha",
+"market": "Slovenia",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.bolha.com/",
+"domain": "bolha.com"
+},
+{
+"name": "Njuškalo",
+"market": "Croatia",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.njuskalo.hr/",
+"domain": "njuskalo.hr"
+},
+{
+"name": "Index Oglasi",
+"market": "Croatia",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.index.hr/oglasi/",
+"domain": "index.hr"
+},
+{
+"name": "Oglasnik",
+"market": "Croatia",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.oglasnik.hr/",
+"domain": "oglasnik.hr"
+},
+{
+"name": "OLX Romania",
+"market": "Romania",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.olx.ro/",
+"domain": "olx.ro"
+},
+{
+"name": "Publi24",
+"market": "Romania",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.publi24.ro/",
+"domain": "publi24.ro"
+},
+{
+"name": "Okazii.ro",
+"market": "Romania",
+"group": "Southeast Europe",
+"type": "General resale",
+"cats": "General goods and collectibles",
+"url": "https://www.okazii.ro/",
+"domain": "okazii.ro"
+},
+{
+"name": "LaJumate",
+"market": "Romania",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.lajumate.ro/",
+"domain": "lajumate.ro"
+},
+{
+"name": "OLX Bulgaria",
+"market": "Bulgaria",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.olx.bg/",
+"domain": "olx.bg"
+},
+{
+"name": "Bazar.bg",
+"market": "Bulgaria",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://bazar.bg/",
+"domain": "bazar.bg"
+},
+{
+"name": "Alo.bg",
+"market": "Bulgaria",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.alo.bg/",
+"domain": "alo.bg"
+},
+{
+"name": "KupujemProdajem",
+"market": "Serbia",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.kupujemprodajem.com/",
+"domain": "kupujemprodajem.com"
+},
+{
+"name": "Halo Oglasi",
+"market": "Serbia",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.halooglasi.com/",
+"domain": "halooglasi.com"
+},
+{
+"name": "Limundo",
+"market": "Serbia",
+"group": "Southeast Europe",
+"type": "Vintage and auctions",
+"cats": "General goods and collectibles",
+"url": "https://www.limundo.com/",
+"domain": "limundo.com"
+},
+{
+"name": "Kupindo",
+"market": "Serbia",
+"group": "Southeast Europe",
+"type": "General resale",
+"cats": "General goods and collectibles",
+"url": "https://www.kupindo.com/",
+"domain": "kupindo.com"
+},
+{
+"name": "OLX.ba",
+"market": "Bosnia and Herzegovina",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://olx.ba/",
+"domain": "olx.ba"
+},
+{
+"name": "Oglasi.me",
+"market": "Montenegro",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://oglasi.me/",
+"domain": "oglasi.me"
+},
+{
+"name": "Patuljak.me",
+"market": "Montenegro",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://patuljak.me/",
+"domain": "patuljak.me"
+},
+{
+"name": "Reklama5",
+"market": "North Macedonia",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.reklama5.mk/",
+"domain": "reklama5.mk"
+},
+{
+"name": "Pazar3",
+"market": "North Macedonia",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.pazar3.mk/",
+"domain": "pazar3.mk"
+},
+{
+"name": "MerrJep Kosovo",
+"market": "Kosovo",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.merrjep.com/",
+"domain": "merrjep.com"
+},
+{
+"name": "MerrJep Albania",
+"market": "Albania",
+"group": "Southeast Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.merrjep.al/",
+"domain": "merrjep.al"
+},
+{
+"name": "OLX Ukraine",
+"market": "Ukraine",
+"group": "Eastern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.olx.ua/",
+"domain": "olx.ua"
+},
+{
+"name": "Shafa",
+"market": "Ukraine",
+"group": "Eastern Europe",
+"type": "General resale",
+"cats": "Fashion, home and electronics",
+"url": "https://shafa.ua/",
+"domain": "shafa.ua"
+},
+{
+"name": "Kidstaff",
+"market": "Ukraine",
+"group": "Eastern Europe",
+"type": "Classifieds",
+"cats": "Children’s goods, fashion and home",
+"url": "https://www.kidstaff.com.ua/",
+"domain": "kidstaff.com.ua"
+},
+{
+"name": "999.md",
+"market": "Moldova",
+"group": "Eastern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://999.md/ro",
+"domain": "999.md"
+},
+{
+"name": "Kufar",
+"market": "Belarus",
+"group": "Eastern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.kufar.by/l",
+"domain": "kufar.by"
+},
+{
+"name": "Onliner Baraholka",
+"market": "Belarus",
+"group": "Eastern Europe",
+"type": "Classifieds",
+"cats": "General goods and electronics",
+"url": "https://baraholka.onliner.by/",
+"domain": "baraholka.onliner.by"
+},
+{
+"name": "Avito",
+"market": "Russia",
+"group": "Eastern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.avito.ru/",
+"domain": "avito.ru"
+},
+{
+"name": "Youla",
+"market": "Russia",
+"group": "Eastern Europe",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://youla.ru/",
+"domain": "youla.ru"
+},
+{
+"name": "sahibinden",
+"market": "Turkey",
+"group": "Turkey and Caucasus",
+"type": "Classifieds",
+"cats": "General goods and vehicles",
+"url": "https://www.sahibinden.com/",
+"domain": "sahibinden.com"
+},
+{
+"name": "letgo Türkiye",
+"market": "Turkey",
+"group": "Turkey and Caucasus",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.letgo.com/",
+"domain": "letgo.com"
+},
+{
+"name": "Dolap",
+"market": "Turkey",
+"group": "Turkey and Caucasus",
+"type": "Specialist marketplace",
+"cats": "Fashion and accessories",
+"url": "https://dolap.com/",
+"domain": "dolap.com"
+},
+{
+"name": "Gardrops",
+"market": "Turkey",
+"group": "Turkey and Caucasus",
+"type": "Specialist marketplace",
+"cats": "Fashion and accessories",
+"url": "https://www.gardrops.com/",
+"domain": "gardrops.com"
+},
+{
+"name": "Mymarket",
+"market": "Georgia",
+"group": "Turkey and Caucasus",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://mymarket.ge/",
+"domain": "mymarket.ge"
+},
+{
+"name": "List.am",
+"market": "Armenia",
+"group": "Turkey and Caucasus",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://www.list.am/en/",
+"domain": "list.am"
+},
+{
+"name": "Tap.az",
+"market": "Azerbaijan",
+"group": "Turkey and Caucasus",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://tap.az/",
+"domain": "tap.az"
+},
+{
+"name": "Bazarla",
+"market": "Azerbaijan",
+"group": "Turkey and Caucasus",
+"type": "Classifieds",
+"cats": "General goods",
+"url": "https://bazarla.az/en",
+"domain": "bazarla.az"
+},
+{
+"name": "Back Market",
+"market": "Selected European markets",
+"group": "Refurbished and used tech",
+"type": "Refurbished marketplace",
+"cats": "Tech and selected appliances",
+"url": "https://www.backmarket.com/",
+"domain": "backmarket.com"
+},
+{
+"name": "refurbed",
+"market": "Selected European markets",
+"group": "Refurbished and used tech",
+"type": "Refurbished marketplace",
+"cats": "Tech, home goods and selected sport gear",
+"url": "https://www.refurbed.com/",
+"domain": "refurbed.com"
+},
+{
+"name": "Swappie",
+"market": "Selected European markets",
+"group": "Refurbished and used tech",
+"type": "Resale retailer",
+"cats": "Refurbished Apple devices",
+"url": "https://swappie.com/",
+"domain": "swappie.com"
+},
+{
+"name": "rebuy",
+"market": "Germany, selected European markets",
+"group": "Refurbished and used tech",
+"type": "Resale retailer",
+"cats": "Electronics and media",
+"url": "https://www.rebuy.de/",
+"domain": "rebuy.de"
+},
+{
+"name": "asgoodasnew",
+"market": "Germany, selected European markets",
+"group": "Refurbished and used tech",
+"type": "Resale retailer",
+"cats": "Refurbished electronics",
+"url": "https://asgoodasnew.de/",
+"domain": "asgoodasnew.de"
+},
+{
+"name": "Clevertronic",
+"market": "Germany",
+"group": "Refurbished and used tech",
+"type": "Resale retailer",
+"cats": "Phones, tablets and tech",
+"url": "https://www.clevertronic.de/",
+"domain": "clevertronic.de"
+},
+{
+"name": "CertiDeal",
+"market": "France, selected European markets",
+"group": "Refurbished and used tech",
+"type": "Resale retailer",
+"cats": "Refurbished phones",
+"url": "https://certideal.com/iphone-reconditionnes-82",
+"domain": "certideal.com"
+},
+{
+"name": "Recommerce",
+"market": "France, selected European markets",
+"group": "Refurbished and used tech",
+"type": "Resale retailer",
+"cats": "Refurbished phones",
+"url": "https://www.recommerce.com/",
+"domain": "recommerce.com"
+},
+{
+"name": "CeX",
+"market": "UK, selected European markets",
+"group": "Refurbished and used tech",
+"type": "Resale retailer",
+"cats": "Used tech, games and media",
+"url": "https://uk.webuy.com/",
+"domain": "uk.webuy.com"
+},
+{
+"name": "musicMagpie",
+"market": "United Kingdom",
+"group": "Refurbished and used tech",
+"type": "Resale retailer",
+"cats": "Refurbished tech and used media",
+"url": "https://www.musicmagpie.co.uk/store/",
+"domain": "musicmagpie.co.uk"
+},
+{
+"name": "Amazon Renewed",
+"market": "UK, selected European markets",
+"group": "Refurbished and used tech",
+"type": "Refurbished marketplace",
+"cats": "Refurbished electronics and appliances",
+"url": "https://www.amazon.co.uk/renewed",
+"domain": "amazon.co.uk"
+},
+{
+"name": "Amazon Resale",
+"market": "UK, selected European markets",
+"group": "Refurbished and used tech",
+"type": "Resale retailer",
+"cats": "Returns and used or open-box goods",
+"url": "https://www.amazon.co.uk/amazonresale",
+"domain": "amazon.co.uk"
+},
+{
+"name": "Apple Certified Refurbished",
+"market": "Selected European markets",
+"group": "Refurbished and used tech",
+"type": "Resale retailer",
+"cats": "Refurbished Apple tech",
+"url": "https://www.apple.com/uk/shop/refurbished",
+"domain": "apple.com"
+},
+{
+"name": "Dell Outlet",
+"market": "UK, selected European markets",
+"group": "Refurbished and used tech",
+"type": "Resale retailer",
+"cats": "Refurbished computers and accessories",
+"url": "https://www.dell.com/en-gb/shop/lp/outlet",
+"domain": "dell.com"
+},
+{
+"name": "Cash Converters UK",
+"market": "United Kingdom",
+"group": "Refurbished and used tech",
+"type": "Resale retailer",
+"cats": "Used electronics, games and tools",
+"url": "https://www.cashconverters.co.uk/",
+"domain": "cashconverters.co.uk"
+},
+{
+"name": "Depop",
+"market": "Selected European markets",
+"group": "Fashion and family",
+"type": "Specialist marketplace",
+"cats": "Second-hand fashion",
+"url": "https://www.depop.com/",
+"domain": "depop.com"
+},
+{
+"name": "Vestiaire Collective",
+"market": "Selected European markets",
+"group": "Fashion and family",
+"type": "Specialist marketplace",
+"cats": "Pre-owned designer fashion",
+"url": "https://www.vestiairecollective.com/",
+"domain": "vestiairecollective.com"
+},
+{
+"name": "Grailed",
+"market": "Selected European markets",
+"group": "Fashion and family",
+"type": "Specialist marketplace",
+"cats": "Designer fashion and streetwear",
+"url": "https://www.grailed.com/",
+"domain": "grailed.com"
+},
+{
+"name": "Sellpy",
+"market": "Selected European markets",
+"group": "Fashion and family",
+"type": "Resale retailer",
+"cats": "Second-hand fashion and lifestyle",
+"url": "https://www.sellpy.com/",
+"domain": "sellpy.com"
+},
+{
+"name": "Oxfam Online Shop",
+"market": "United Kingdom",
+"group": "Fashion and family",
+"type": "Resale retailer",
+"cats": "Charity fashion, books and home",
+"url": "https://onlineshop.oxfam.org.uk/",
+"domain": "onlineshop.oxfam.org.uk"
+},
+{
+"name": "Designer Exchange",
+"market": "United Kingdom",
+"group": "Fashion and family",
+"type": "Resale retailer",
+"cats": "Designer handbags and apparel",
+"url": "https://uk.designerexchange.com/",
+"domain": "uk.designerexchange.com"
+},
+{
+"name": "Beebs by Kiabi",
+"market": "France",
+"group": "Fashion and family",
+"type": "Specialist marketplace",
+"cats": "Children’s clothing and family goods",
+"url": "https://www.beebs.app/",
+"domain": "beebs.app"
+},
+{
+"name": "KidKanaï",
+"market": "France",
+"group": "Fashion and family",
+"type": "Resale retailer",
+"cats": "Children’s clothing, toys and gear",
+"url": "https://www.kidkanai.fr/",
+"domain": "kidkanai.fr"
+},
+{
+"name": "Selency",
+"market": "France, cross-border shipping",
+"group": "Home and design",
+"type": "Specialist marketplace",
+"cats": "Second-hand furniture and homeware",
+"url": "https://www.selency.fr/",
+"domain": "selency.fr"
+},
+{
+"name": "Whoppah",
+"market": "Selected European markets",
+"group": "Home and design",
+"type": "Specialist marketplace",
+"cats": "Second-hand design furniture, lighting and art",
+"url": "https://www.whoppah.com/",
+"domain": "whoppah.com"
+},
+{
+"name": "IKEA Second-hand",
+"market": "Selected European markets",
+"group": "Home and design",
+"type": "Specialist marketplace",
+"cats": "Pre-owned IKEA furniture and homewares",
+"url": "https://mobile.secondhand.ikea.com/",
+"domain": "mobile.secondhand.ikea.com"
+},
+{
+"name": "Pamono",
+"market": "Selected European markets",
+"group": "Home and design",
+"type": "Specialist marketplace",
+"cats": "Vintage furniture and design",
+"url": "https://www.pamono.eu/",
+"domain": "pamono.eu"
+},
+{
+"name": "Vinterior",
+"market": "United Kingdom",
+"group": "Home and design",
+"type": "Specialist marketplace",
+"cats": "Vintage furniture and homeware",
+"url": "https://www.vinterior.co/",
+"domain": "vinterior.co"
+},
+{
+"name": "1stDibs",
+"market": "Selected European markets",
+"group": "Home and design",
+"type": "Specialist marketplace",
+"cats": "Antiques, design, vintage and art",
+"url": "https://www.1stdibs.com/",
+"domain": "1stdibs.com"
+},
+{
+"name": "buycycle",
+"market": "Selected European markets",
+"group": "Bikes and sports",
+"type": "Specialist marketplace",
+"cats": "Used bikes and cycling gear",
+"url": "https://buycycle.com/",
+"domain": "buycycle.com"
+},
+{
+"name": "Upway",
+"market": "Selected European markets",
+"group": "Bikes and sports",
+"type": "Resale retailer",
+"cats": "Refurbished e-bikes",
+"url": "https://upway.co/",
+"domain": "upway.co"
+},
+{
+"name": "Troc-Vélo",
+"market": "France",
+"group": "Bikes and sports",
+"type": "Specialist marketplace",
+"cats": "Used bikes and cycling gear",
+"url": "https://www.troc-velo.com/",
+"domain": "troc-velo.com"
+},
+{
+"name": "Tuvalum",
+"market": "Selected European markets",
+"group": "Bikes and sports",
+"type": "Resale retailer",
+"cats": "Certified pre-owned bikes",
+"url": "https://tuvalum.eu/",
+"domain": "tuvalum.eu"
+},
+{
+"name": "Decathlon Second Life",
+"market": "France, Belgium and selected markets",
+"group": "Bikes and sports",
+"type": "Resale retailer",
+"cats": "Used sporting goods and bikes",
+"url": "https://www.decathlon.fr/occasion",
+"domain": "decathlon.fr"
+},
+{
+"name": "Campsider",
+"market": "France, selected European markets",
+"group": "Bikes and sports",
+"type": "Specialist marketplace",
+"cats": "Second-hand outdoor and sports equipment",
+"url": "https://campsider.com/",
+"domain": "campsider.com"
+},
+{
+"name": "MPB",
+"market": "EU, United Kingdom",
+"group": "Cameras and music gear",
+"type": "Resale retailer",
+"cats": "Used cameras, lenses and video gear",
+"url": "https://www.mpb.com/en-eu",
+"domain": "mpb.com"
+},
+{
+"name": "Kamerastore",
+"market": "Finland, international shipping",
+"group": "Cameras and music gear",
+"type": "Resale retailer",
+"cats": "Used camera equipment and film cameras",
+"url": "https://kamerastore.com/en-eu/",
+"domain": "kamerastore.com"
+},
+{
+"name": "Wex Used",
+"market": "United Kingdom",
+"group": "Cameras and music gear",
+"type": "Resale retailer",
+"cats": "Used cameras and lenses",
+"url": "https://www.wexphotovideo.com/used/",
+"domain": "wexphotovideo.com"
+},
+{
+"name": "Reverb",
+"market": "Selected European markets",
+"group": "Cameras and music gear",
+"type": "Specialist marketplace",
+"cats": "Guitars, instruments and audio gear",
+"url": "https://reverb.com/",
+"domain": "reverb.com"
+},
+{
+"name": "Musamaailma Used",
+"market": "Finland",
+"group": "Cameras and music gear",
+"type": "Resale retailer",
+"cats": "Used guitars and music equipment",
+"url": "https://www.musamaailma.fi/en/guitar/b-stock-used-guitars",
+"domain": "musamaailma.fi"
+},
+{
+"name": "World of Books",
+"market": "UK, selected European markets",
+"group": "Books and collectibles",
+"type": "Resale retailer",
+"cats": "Used books and media",
+"url": "https://www.worldofbooks.com/",
+"domain": "worldofbooks.com"
+},
+{
+"name": "medimops",
+"market": "Germany, Austria",
+"group": "Books and collectibles",
+"type": "Resale retailer",
+"cats": "Used books, games and media",
+"url": "https://www.medimops.de/",
+"domain": "medimops.de"
+},
+{
+"name": "momox-shop",
+"market": "France",
+"group": "Books and collectibles",
+"type": "Resale retailer",
+"cats": "Used books and media",
+"url": "https://www.momox-shop.fr/",
+"domain": "momox-shop.fr"
+},
+{
+"name": "AbeBooks",
+"market": "Selected European markets",
+"group": "Books and collectibles",
+"type": "Specialist marketplace",
+"cats": "Used, rare and out-of-print books",
+"url": "https://www.abebooks.com/",
+"domain": "abebooks.com"
+},
+{
+"name": "ZVAB",
+"market": "Germany, Austria and Switzerland focus",
+"group": "Books and collectibles",
+"type": "Specialist marketplace",
+"cats": "Used and antiquarian books",
+"url": "https://www.zvab.com/",
+"domain": "zvab.com"
+},
+{
+"name": "Bookbot",
+"market": "Czechia, Slovakia, selected European markets",
+"group": "Books and collectibles",
+"type": "Resale retailer",
+"cats": "Second-hand books",
+"url": "https://bookbot.com/",
+"domain": "bookbot.com"
+},
+{
+"name": "Discogs",
+"market": "Selected European markets",
+"group": "Books and collectibles",
+"type": "Specialist marketplace",
+"cats": "Vinyl, CDs and recorded music",
+"url": "https://www.discogs.com/sell/list",
+"domain": "discogs.com"
+},
+{
+"name": "Cardmarket",
+"market": "Selected European markets",
+"group": "Books and collectibles",
+"type": "Specialist marketplace",
+"cats": "Collectible trading cards",
+"url": "https://www.cardmarket.com/en",
+"domain": "cardmarket.com"
+},
+{
+"name": "BrickLink",
+"market": "Selected European markets",
+"group": "Books and collectibles",
+"type": "Specialist marketplace",
+"cats": "LEGO sets and parts",
+"url": "https://www.bricklink.com/",
+"domain": "bricklink.com"
+},
+{
+"name": "Chrono24",
+"market": "Selected European markets",
+"group": "Books and collectibles",
+"type": "Specialist marketplace",
+"cats": "Pre-owned watches",
+"url": "https://www.chrono24.com/",
+"domain": "chrono24.com"
+},
+{
+"name": "Watchfinder",
+"market": "UK, selected European markets",
+"group": "Books and collectibles",
+"type": "Resale retailer",
+"cats": "Pre-owned watches",
+"url": "https://www.watchfinder.com/",
+"domain": "watchfinder.com"
+},
+{
+"name": "AutoScout24",
+"market": "Selected European markets",
+"group": "Vehicles",
+"type": "Vehicle marketplace",
+"cats": "Used cars and vehicles",
+"url": "https://www.autoscout24.com/lst/used-cars",
+"domain": "autoscout24.com"
+},
+{
+"name": "mobile.de",
+"market": "Germany, cross-border buyers",
+"group": "Vehicles",
+"type": "Vehicle marketplace",
+"cats": "Used cars and vehicles",
+"url": "https://www.mobile.de/",
+"domain": "mobile.de"
+},
+{
+"name": "Auto Trader UK",
+"market": "United Kingdom",
+"group": "Vehicles",
+"type": "Vehicle marketplace",
+"cats": "Used cars and vehicles",
+"url": "https://www.autotrader.co.uk/cars/used",
+"domain": "autotrader.co.uk"
+},
+{
+"name": "La Centrale",
+"market": "France",
+"group": "Vehicles",
+"type": "Vehicle marketplace",
+"cats": "Used cars and vehicles",
+"url": "https://www.lacentrale.fr/",
+"domain": "lacentrale.fr"
+},
+{
+"name": "Coches.net",
+"market": "Spain",
+"group": "Vehicles",
+"type": "Vehicle marketplace",
+"cats": "Used cars and vehicles",
+"url": "https://www.coches.net/es/segunda-mano/",
+"domain": "coches.net"
+},
+{
+"name": "FINN Bil",
+"market": "Norway",
+"group": "Vehicles",
+"type": "Vehicle marketplace",
+"cats": "Used cars and vehicles",
+"url": "https://www.finn.no/mobility/search/car",
+"domain": "finn.no"
+},
+{
+"name": "Bilbasen",
+"market": "Denmark",
+"group": "Vehicles",
+"type": "Vehicle marketplace",
+"cats": "Used cars and vehicles",
+"url": "https://www.bilbasen.dk/",
+"domain": "bilbasen.dk"
+},
+{
+"name": "Nettiauto",
+"market": "Finland",
+"group": "Vehicles",
+"type": "Vehicle marketplace",
+"cats": "Used cars and vehicles",
+"url": "https://www.nettiauto.com/",
+"domain": "nettiauto.com"
+},
+{
+"name": "Standvirtual",
+"market": "Portugal",
+"group": "Vehicles",
+"type": "Vehicle marketplace",
+"cats": "Used cars and vehicles",
+"url": "https://www.standvirtual.com/",
+"domain": "standvirtual.com"
+},
+{
+"name": "OTOMOTO",
+"market": "Poland",
+"group": "Vehicles",
+"type": "Vehicle marketplace",
+"cats": "Used cars and vehicles",
+"url": "https://www.otomoto.pl/",
+"domain": "otomoto.pl"
+},
+{
+"name": "Autovit.ro",
+"market": "Romania",
+"group": "Vehicles",
+"type": "Vehicle marketplace",
+"cats": "Used cars and vehicles",
+"url": "https://www.autovit.ro/",
+"domain": "autovit.ro"
+},
+{
+"name": "Car.gr",
+"market": "Greece",
+"group": "Vehicles",
+"type": "Vehicle marketplace",
+"cats": "Used cars and vehicles",
+"url": "https://www.car.gr/",
+"domain": "car.gr"
+},
+{
+"name": "Ovoko / RRR.LT",
+"market": "Selected European markets",
+"group": "Vehicles",
+"type": "Specialist marketplace",
+"cats": "Used vehicle parts",
+"url": "https://ovoko.com/",
+"domain": "ovoko.com"
+}
+]

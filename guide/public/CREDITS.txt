@@ -1,0 +1,23 @@
+Characters (the intro's people; Dennis is the game's own model)
+
+Bought character packs, used under their licences (use in this game allowed; the packs themselves are not
+redistributed: only converted, game-ready meshes and shrunk textures are shipped, in models/npc/).
+
+- "Rigged Low-Poly Male NPCs" (v1.1) and "Rigged Low-Poly Female NPCs", by BitSoft
+  (https://bitsoft.itch.io) - the crowds and the passers-by.
+- "PSX - Low Poly Everyday Workers Character Pack" (police officer, high-visibility worker, denim worker)
+  - author not named in the pack.
+- "PSX Hazmat Characters" - author not named in the pack.
+- "PSX Female Character - Casual Outfit" - author not named in the pack.
+- "PSX Character Pack - 10 PSX Retro Characters" - author not named in the pack.
+- "PSX_Character" (3 characters, itch.io) - author not named in the pack.
+
+Converted to the game's skeleton by scripts/convert-npcs.mjs. Sound credits: sfx/CREDITS.txt.
+
+Motion (the people's animation clips, models/anims/; retargeted by scripts/bake-anims.mjs)
+
+- The 100STYLE Dataset - Ian Mason (https://www.ianxmason.com/100style/), CC BY 4.0
+  (https://creativecommons.org/licenses/by/4.0/): the depressed, old, hands-in-pockets, drunk, looking-up and
+  in-the-dark walks and idles. Changed: cut to short straight stretches, made to loop, retargeted to the game's skeleton.
+- Universal Animation Library and Universal Animation Library 2 (Standard), by Quaternius (https://quaternius.com),
+  CC0 1.0: everything else.

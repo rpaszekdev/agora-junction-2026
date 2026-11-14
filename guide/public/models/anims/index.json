@@ -1,0 +1,705 @@
+{
+ "v": 1,
+ "fps": 30,
+ "ref": {
+  "hipY": 97.322,
+  "dirs": {
+   "Spine": [
+    0,
+    0.99833,
+    -0.05771
+   ],
+   "Spine1": [
+    0,
+    0.99833,
+    -0.05771
+   ],
+   "Spine2": [
+    0,
+    0.99833,
+    -0.05771
+   ],
+   "Neck": [
+    0,
+    0.94135,
+    0.33744
+   ],
+   "LeftShoulder": [
+    0.9047,
+    -0.42603,
+    -0.00387
+   ],
+   "LeftArm": [
+    0.99613,
+    -0.00189,
+    -0.08782
+   ],
+   "LeftForeArm": [
+    0.99927,
+    -0.02431,
+    0.02952
+   ],
+   "RightShoulder": [
+    -0.9047,
+    -0.42603,
+    0.00387
+   ],
+   "RightArm": [
+    -0.99474,
+    -0.00189,
+    -0.10242
+   ],
+   "RightForeArm": [
+    -0.99909,
+    -0.02431,
+    0.03515
+   ],
+   "LeftUpLeg": [
+    0.03413,
+    -0.99941,
+    0.00333
+   ],
+   "LeftLeg": [
+    0.03542,
+    -0.9956,
+    -0.0868
+   ],
+   "LeftFoot": [
+    -0.10363,
+    -0.54872,
+    0.82956
+   ],
+   "RightUpLeg": [
+    -0.03413,
+    -0.99941,
+    0.00382
+   ],
+   "RightLeg": [
+    -0.03542,
+    -0.99563,
+    -0.08638
+   ],
+   "RightFoot": [
+    0.10311,
+    -0.54595,
+    0.83145
+   ]
+  }
+ },
+ "clips": {
+  "walk-depressed": {
+   "duration": 2.8,
+   "loop": true,
+   "speed": 0.613,
+   "frames": 85,
+   "what": "Depressed walk: slow, head down, shoulders dropped",
+   "source": "100STYLE, Ian Mason",
+   "from": "Depressed_FW",
+   "url": "https://www.ianxmason.com/100style/",
+   "licence": "CC-BY-4.0",
+   "credit": "The 100STYLE Dataset - Ian Mason"
+  },
+  "walk-old": {
+   "duration": 3.4,
+   "loop": true,
+   "speed": 0.235,
+   "frames": 103,
+   "what": "Old man walk: stooped, short steps",
+   "source": "100STYLE, Ian Mason",
+   "from": "Old_FW",
+   "url": "https://www.ianxmason.com/100style/",
+   "licence": "CC-BY-4.0",
+   "credit": "The 100STYLE Dataset - Ian Mason"
+  },
+  "walk-hands-pockets": {
+   "duration": 2.6333,
+   "loop": true,
+   "speed": 0.954,
+   "frames": 80,
+   "what": "Walk, hands in pockets",
+   "source": "100STYLE, Ian Mason",
+   "from": "HandsInPockets_FW",
+   "url": "https://www.ianxmason.com/100style/",
+   "licence": "CC-BY-4.0",
+   "credit": "The 100STYLE Dataset - Ian Mason"
+  },
+  "walk-drunk": {
+   "duration": 2.4,
+   "loop": true,
+   "speed": 0.869,
+   "frames": 73,
+   "what": "Drunk walk: weaving, unsteady",
+   "source": "100STYLE, Ian Mason",
+   "from": "Drunk_FW",
+   "url": "https://www.ianxmason.com/100style/",
+   "licence": "CC-BY-4.0",
+   "credit": "The 100STYLE Dataset - Ian Mason"
+  },
+  "walk-look-up": {
+   "duration": 2.4333,
+   "loop": true,
+   "speed": 0.47,
+   "frames": 74,
+   "what": "Walk looking up (at facades, the rain)",
+   "source": "100STYLE, Ian Mason",
+   "from": "LookUp_FW",
+   "url": "https://www.ianxmason.com/100style/",
+   "licence": "CC-BY-4.0",
+   "credit": "The 100STYLE Dataset - Ian Mason"
+  },
+  "walk-in-the-dark": {
+   "duration": 2.6,
+   "loop": true,
+   "speed": 0.496,
+   "frames": 79,
+   "what": "Feeling the way in the dark: hesitant, arms forward",
+   "source": "100STYLE, Ian Mason",
+   "from": "InTheDark_FW",
+   "url": "https://www.ianxmason.com/100style/",
+   "licence": "CC-BY-4.0",
+   "credit": "The 100STYLE Dataset - Ian Mason"
+  },
+  "idle-depressed": {
+   "duration": 3.0333,
+   "loop": true,
+   "speed": 0,
+   "frames": 92,
+   "what": "Standing, depressed: slumped, head down",
+   "source": "100STYLE, Ian Mason",
+   "from": "Depressed_ID",
+   "url": "https://www.ianxmason.com/100style/",
+   "licence": "CC-BY-4.0",
+   "credit": "The 100STYLE Dataset - Ian Mason"
+  },
+  "idle-old": {
+   "duration": 3,
+   "loop": true,
+   "speed": 0,
+   "frames": 91,
+   "what": "Standing, old man",
+   "source": "100STYLE, Ian Mason",
+   "from": "Old_ID",
+   "url": "https://www.ianxmason.com/100style/",
+   "licence": "CC-BY-4.0",
+   "credit": "The 100STYLE Dataset - Ian Mason"
+  },
+  "idle-drunk": {
+   "duration": 3.5,
+   "loop": true,
+   "speed": 0,
+   "frames": 106,
+   "what": "Standing drunk, swaying",
+   "source": "100STYLE, Ian Mason",
+   "from": "Drunk_ID",
+   "url": "https://www.ianxmason.com/100style/",
+   "licence": "CC-BY-4.0",
+   "credit": "The 100STYLE Dataset - Ian Mason"
+  },
+  "idle-hands-pockets": {
+   "duration": 3,
+   "loop": true,
+   "speed": 0,
+   "frames": 91,
+   "what": "Standing, hands in pockets",
+   "source": "100STYLE, Ian Mason",
+   "from": "HandsInPockets_ID",
+   "url": "https://www.ianxmason.com/100style/",
+   "licence": "CC-BY-4.0",
+   "credit": "The 100STYLE Dataset - Ian Mason"
+  },
+  "look-up": {
+   "duration": 3,
+   "loop": true,
+   "speed": 0,
+   "frames": 91,
+   "what": "Standing, looking up",
+   "source": "100STYLE, Ian Mason",
+   "from": "LookUp_ID",
+   "url": "https://www.ianxmason.com/100style/",
+   "licence": "CC-BY-4.0",
+   "credit": "The 100STYLE Dataset - Ian Mason"
+  },
+  "walk": {
+   "duration": 1.3333,
+   "loop": true,
+   "speed": 1.08,
+   "frames": 41,
+   "what": "Plain walk",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Walk_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "idle": {
+   "duration": 2.5,
+   "loop": true,
+   "speed": 0,
+   "frames": 76,
+   "what": "Plain standing idle",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Idle_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "idle-talking": {
+   "duration": 2.9333,
+   "loop": true,
+   "speed": 0,
+   "frames": 89,
+   "what": "Standing, talking with the hands",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Idle_Talking_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "interact": {
+   "duration": 2,
+   "loop": false,
+   "speed": 0,
+   "frames": 61,
+   "what": "Reaching forward (pressing a buzzer, a button)",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Interact",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "push": {
+   "duration": 2.6667,
+   "loop": true,
+   "speed": 0.434,
+   "frames": 81,
+   "what": "Pushing (a heavy door, a stuck bike): leaning in, stepping forward; move him at its speed",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Push_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "pickup": {
+   "duration": 0.8333,
+   "loop": false,
+   "speed": 0,
+   "frames": 26,
+   "what": "Picking something up off a table",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "PickUp_Table",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "crouch": {
+   "duration": 2.9333,
+   "loop": true,
+   "speed": 0,
+   "frames": 89,
+   "what": "Crouching",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Crouch_Idle_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "crouch-walk": {
+   "duration": 2,
+   "loop": true,
+   "speed": 0.762,
+   "frames": 61,
+   "what": "Crouched walk",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Crouch_Fwd_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "sit-enter": {
+   "duration": 1.3,
+   "loop": false,
+   "speed": 0,
+   "frames": 40,
+   "what": "Sitting down (on a bench, a step)",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Sitting_Enter",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "sit-idle": {
+   "duration": 1.6667,
+   "loop": true,
+   "speed": 0,
+   "frames": 51,
+   "what": "Sitting",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Sitting_Idle_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "sit-talking": {
+   "duration": 2.9333,
+   "loop": true,
+   "speed": 0,
+   "frames": 89,
+   "what": "Sitting, talking",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Sitting_Talking_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "sit-exit": {
+   "duration": 1.0333,
+   "loop": false,
+   "speed": 0,
+   "frames": 32,
+   "what": "Standing up from sitting",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Sitting_Exit",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "kneel": {
+   "duration": 2.8,
+   "loop": true,
+   "speed": 0,
+   "frames": 85,
+   "what": "Kneeling, working at something low (a lock, a bike)",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Fixing_Kneeling",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "hold-light": {
+   "duration": 1.2667,
+   "loop": true,
+   "speed": 0,
+   "frames": 39,
+   "what": "Standing, holding a torch (a phone light, an umbrella) up",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Idle_Torch_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "collapse": {
+   "duration": 2.4,
+   "loop": false,
+   "speed": 0,
+   "frames": 73,
+   "what": "Collapsing to the ground",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Death01",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "consume": {
+   "duration": 2.5,
+   "loop": false,
+   "speed": 0,
+   "frames": 76,
+   "what": "A drag on a cigarette (or a swig): the right hand to the mouth and away (the idle, the arm by IK)",
+   "source": "Universal Animation Library (Standard), Quaternius",
+   "from": "Idle_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary.html",
+   "licence": "CC0"
+  },
+  "swig": {
+   "duration": 1.3333,
+   "loop": false,
+   "speed": 0,
+   "frames": 41,
+   "what": "The left hand up to the mouth: a swig from a bottle, a bite to eat",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "Consume",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "hold-up": {
+   "duration": 1.3333,
+   "loop": false,
+   "speed": 0,
+   "frames": 41,
+   "what": "The same as swig (an old name, kept for callers): the left hand up to the mouth",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "Consume",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "zombie-walk": {
+   "duration": 1.3333,
+   "loop": true,
+   "speed": 0.976,
+   "frames": 41,
+   "what": "Staggering walk (a drunk)",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "Zombie_Walk_Fwd_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "zombie-idle": {
+   "duration": 1.3333,
+   "loop": true,
+   "speed": 0,
+   "frames": 41,
+   "what": "Standing, lolling (a drunk)",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "Zombie_Idle_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "lay": {
+   "duration": 8,
+   "loop": true,
+   "speed": 0,
+   "frames": 241,
+   "what": "Asleep on the ground (a rough sleeper): on his back, rolled a little to his left, forearm over his eyes, a knee up, the back of his head on the floor; breathing",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "LayToIdle",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "sleep": {
+   "duration": 8,
+   "loop": true,
+   "speed": 0,
+   "frames": 241,
+   "what": "Asleep on a couch: as lay, along +x (head at +x), his pelvis on the seat (the seat sit-idle sits on: 0.40-0.42 m, exactly Person.animSeat('sleep')); root on the floor; his head at seat level (no armrest assumed)",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "LayToIdle",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "wake-up": {
+   "duration": 5,
+   "loop": false,
+   "speed": 0,
+   "frames": 151,
+   "what": "Waking on a couch: from sleep (breathing), the arm off his eyes, legs swung down, sitting up; ends exactly on sit-idle's first frame (the same seat, 0.40-0.42 m: Person.animSeat('wake-up'))",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "LayToIdle",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "sleep-side": {
+   "duration": 8,
+   "loop": true,
+   "speed": 0,
+   "frames": 241,
+   "what": "Asleep on a couch on his right side, facing the sofa's back (his front to -z, head at +x; the room is +z): the left arm over his head and ear, knees drawn up, face down in the cushion; pelvis on sit-idle's seat (Person.animSeat('sleep-side')); root on the floor",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "LayToIdle",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "wake-up-side": {
+   "duration": 5.6,
+   "loop": false,
+   "speed": 0,
+   "frames": 169,
+   "what": "Waking from sleep-side: asleep to 2 s; rolls onto his back (2-3.3 s) with his head kept turned to the sofa's back (-z) and his forearm over his face; sits up facing +z (face towards -z until 3.9 s, +z from 4.6 s); ends exactly on sit-idle's first frame (the same seat)",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "LayToIdle",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "lay-to-idle": {
+   "duration": 2.3333,
+   "loop": false,
+   "speed": 0,
+   "frames": 71,
+   "what": "Getting up off the ground: from lay (its first frame), into the get-up",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "LayToIdle",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "idle-rail": {
+   "duration": 2.5,
+   "loop": true,
+   "speed": 0,
+   "frames": 76,
+   "what": "Leaning on a railing (a bridge over a canal)",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "Idle_Rail_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "idle-rail-call": {
+   "duration": 2.5,
+   "loop": false,
+   "speed": 0,
+   "frames": 76,
+   "what": "Leaning on a railing, calling out",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "Idle_Rail_Call",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "idle-phone": {
+   "duration": 2.9333,
+   "loop": true,
+   "speed": 0,
+   "frames": 89,
+   "what": "Standing, on the phone",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "Idle_TalkingPhone_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "idle-fold-arms": {
+   "duration": 2.5,
+   "loop": true,
+   "speed": 0,
+   "frames": 76,
+   "what": "Standing, arms folded",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "Idle_FoldArms_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "idle-no": {
+   "duration": 2.5,
+   "loop": true,
+   "speed": 0,
+   "frames": 76,
+   "what": "Shaking the head",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "Idle_No_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "nod": {
+   "duration": 2.5,
+   "loop": false,
+   "speed": 0,
+   "frames": 76,
+   "what": "Agreeing: a nod, and the right arm waved forward",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "Yes",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "bend": {
+   "duration": 1.3667,
+   "loop": false,
+   "speed": 0,
+   "frames": 42,
+   "what": "Bending over to open something low (a bin, a bag)",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "Chest_Open",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "walk-carry": {
+   "duration": 2,
+   "loop": true,
+   "speed": 0.6,
+   "frames": 61,
+   "what": "Walking, carrying something in both arms",
+   "source": "Universal Animation Library 2 (Standard), Quaternius",
+   "from": "Walk_Carry_Loop",
+   "url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+   "licence": "CC0"
+  },
+  "um-walk-tired": {
+   "duration": 1.0667,
+   "loop": true,
+   "speed": 0.785,
+   "frames": 33,
+   "what": "UniMate trial: a slow walk (asked for slumped; came out nearly upright, 0.8 m/s). Compare with walk-depressed",
+   "source": "UniMate (CC BY-NC 4.0)",
+   "from": "An object walks forward slowly with a slumped posture. (cfg 2.0, seed 17, rep 0)",
+   "url": "https://github.com/Friedrich-M/UniMate",
+   "licence": "CC-BY-NC-4.0",
+   "credit": "Generated with UniMate (Mou et al., SIGGRAPH Asia 2026), checkpoint unimate_uniml3d_f60_v3: CC BY-NC 4.0, non-commercial use only"
+  },
+  "um-walk-slumped": {
+   "duration": 1.2667,
+   "loop": true,
+   "speed": 1.071,
+   "frames": 39,
+   "what": "UniMate trial: a hunched, bent-kneed walk (1.1 m/s). Compare with walk-depressed",
+   "source": "UniMate (CC BY-NC 4.0)",
+   "from": "An object walks forward with a slumped posture. (cfg 2.5, seed 7, rep 2)",
+   "url": "https://github.com/Friedrich-M/UniMate",
+   "licence": "CC-BY-NC-4.0",
+   "credit": "Generated with UniMate (Mou et al., SIGGRAPH Asia 2026), checkpoint unimate_uniml3d_f60_v3: CC BY-NC 4.0, non-commercial use only"
+  },
+  "um-idle-tired": {
+   "duration": 1.3333,
+   "loop": true,
+   "speed": 0,
+   "frames": 41,
+   "what": "UniMate trial: standing, shifting his weight (upright). Compare with idle-depressed",
+   "source": "UniMate (CC BY-NC 4.0)",
+   "from": "An object stands idle, shifting its weight. (cfg 2.0, seed 17, rep 1)",
+   "url": "https://github.com/Friedrich-M/UniMate",
+   "licence": "CC-BY-NC-4.0",
+   "credit": "Generated with UniMate (Mou et al., SIGGRAPH Asia 2026), checkpoint unimate_uniml3d_f60_v3: CC BY-NC 4.0, non-commercial use only"
+  },
+  "um-press-button": {
+   "duration": 1.9667,
+   "loop": false,
+   "speed": 0,
+   "frames": 60,
+   "what": "UniMate trial: the right arm out at shoulder height, held, lowered. Compare with interact",
+   "source": "UniMate (CC BY-NC 4.0)",
+   "from": "An object reaches out and presses something with the right hand. (cfg 2.5, seed 7, rep 1)",
+   "url": "https://github.com/Friedrich-M/UniMate",
+   "licence": "CC-BY-NC-4.0",
+   "credit": "Generated with UniMate (Mou et al., SIGGRAPH Asia 2026), checkpoint unimate_uniml3d_f60_v3: CC BY-NC 4.0, non-commercial use only"
+  },
+  "um-knock": {
+   "duration": 1.9667,
+   "loop": false,
+   "speed": 0,
+   "frames": 60,
+   "what": "UniMate trial, the closest of 11 knock samples: one reach forward with the right forearm, no knocking. Compare with interact",
+   "source": "UniMate (CC BY-NC 4.0)",
+   "from": "An object knocks on a door with its right hand. (cfg 2.5, seed 7, rep 2)",
+   "url": "https://github.com/Friedrich-M/UniMate",
+   "licence": "CC-BY-NC-4.0",
+   "credit": "Generated with UniMate (Mou et al., SIGGRAPH Asia 2026), checkpoint unimate_uniml3d_f60_v3: CC BY-NC 4.0, non-commercial use only"
+  },
+  "um-smoke": {
+   "duration": 1.9667,
+   "loop": false,
+   "speed": 0,
+   "frames": 60,
+   "what": "UniMate trial: the right hand to the mouth, held, lowered (a drag). Compare with consume",
+   "source": "UniMate (CC BY-NC 4.0)",
+   "from": "An object raises its right hand to its mouth, holds it there, and lowers it. (cfg 2.5, seed 11, rep 1)",
+   "url": "https://github.com/Friedrich-M/UniMate",
+   "licence": "CC-BY-NC-4.0",
+   "credit": "Generated with UniMate (Mou et al., SIGGRAPH Asia 2026), checkpoint unimate_uniml3d_f60_v3: CC BY-NC 4.0, non-commercial use only"
+  },
+  "um-sit-slumped": {
+   "duration": 1.3333,
+   "loop": true,
+   "speed": 0,
+   "frames": 41,
+   "what": "UniMate trial (asked for leaning on a rail; came out sitting): seated, slumped, elbows on knees. Compare with sit-idle",
+   "source": "UniMate (CC BY-NC 4.0)",
+   "from": "An object leans forward with both hands resting on something in front of it. (cfg 2.5, seed 11, rep 1)",
+   "url": "https://github.com/Friedrich-M/UniMate",
+   "licence": "CC-BY-NC-4.0",
+   "credit": "Generated with UniMate (Mou et al., SIGGRAPH Asia 2026), checkpoint unimate_uniml3d_f60_v3: CC BY-NC 4.0, non-commercial use only"
+  },
+  "um-look-up": {
+   "duration": 1.3333,
+   "loop": true,
+   "speed": 0,
+   "frames": 41,
+   "what": "UniMate trial: standing; the head hardly tilts (UniMate gives the head no turn of its own). Compare with look-up",
+   "source": "UniMate (CC BY-NC 4.0)",
+   "from": "An object stands and looks upward. (cfg 2.5, seed 7, rep 1)",
+   "url": "https://github.com/Friedrich-M/UniMate",
+   "licence": "CC-BY-NC-4.0",
+   "credit": "Generated with UniMate (Mou et al., SIGGRAPH Asia 2026), checkpoint unimate_uniml3d_f60_v3: CC BY-NC 4.0, non-commercial use only"
+  },
+  "um-wake-up": {
+   "duration": 5.3,
+   "loop": false,
+   "speed": 0,
+   "frames": 160,
+   "what": "UniMate trial (Johnny's wake-up): curled on his side on the floor, rolls onto his back; never sits up (5.3 s). Compare with wake-up-side",
+   "source": "UniMate (CC BY-NC 4.0)",
+   "from": "Motion expansion, 3 x 60 frames (overlap 10): An object lies curled on its side. / An object rolls over onto its back. / An object sits up from lying on its back. (cfg 2.5, seed 13, rep 0)",
+   "url": "https://github.com/Friedrich-M/UniMate",
+   "licence": "CC-BY-NC-4.0",
+   "credit": "Generated with UniMate (Mou et al., SIGGRAPH Asia 2026), checkpoint unimate_uniml3d_f60_v3: CC BY-NC 4.0, non-commercial use only"
+  }
+ }
+}

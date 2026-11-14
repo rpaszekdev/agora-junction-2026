@@ -14,6 +14,8 @@
                                              error:(NSError **)error;
 @end
 
+static const CGFloat MAX_SIDE = 720;  // a card is at most ~360 px wide, twice that for sharp screens; full-size cutouts were ~700 KB each
+
 int main(int argc, const char *argv[]) {
     @autoreleasepool {
         if (argc != 3) { fprintf(stderr, "usage: cutout <photo> <out.png>\n"); return 1; }
@@ -30,7 +32,10 @@ int main(int argc, const char *argv[]) {
                                                croppedToInstancesExtent:YES error:&error];
         if (!pixels) { fprintf(stderr, "%s\n", error.description.UTF8String); return 1; }
         CGColorSpaceRef srgb = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
-        BOOL ok = [[CIContext context] writePNGRepresentationOfImage:[CIImage imageWithCVPixelBuffer:pixels]
+        CIImage *cut = [CIImage imageWithCVPixelBuffer:pixels];
+        CGFloat side = MAX(cut.extent.size.width, cut.extent.size.height);
+        if (side > MAX_SIDE) cut = [cut imageByApplyingTransform:CGAffineTransformMakeScale(MAX_SIDE / side, MAX_SIDE / side)];
+        BOOL ok = [[CIContext context] writePNGRepresentationOfImage:cut
                                                                toURL:[NSURL fileURLWithPath:@(argv[2])]
                                                               format:kCIFormatRGBA8 colorSpace:srgb options:@{} error:&error];
         if (!ok) { fprintf(stderr, "%s\n", error.description.UTF8String); return 1; }

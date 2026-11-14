@@ -2,3 +2,5 @@
 .cutout-bin
 __pycache__/
 .DS_Store
+# Mixamo raw character and clips: Adobe terms forbid passing the raw files on
+guide/public/models/mixamo/

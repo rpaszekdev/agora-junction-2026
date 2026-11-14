@@ -1,0 +1,226 @@
+{
+ "people": {
+  "crowd-male": {
+   "file": "models/npc/crowd-male.glb.json",
+   "sex": "m",
+   "kind": "crowd",
+   "pack": "bitsoft",
+   "label": "BitSoft man",
+   "clothing": [
+    "models/npc/crowd-male-clothing-1.png",
+    "models/npc/crowd-male-clothing-2.png",
+    "models/npc/crowd-male-clothing-3.png",
+    "models/npc/crowd-male-clothing-4.png",
+    "models/npc/crowd-male-clothing-5.png",
+    "models/npc/crowd-male-clothing-6.png"
+   ],
+   "skin": [
+    "models/npc/crowd-male-skin-1.png",
+    "models/npc/crowd-male-skin-2.png",
+    "models/npc/crowd-male-skin-3.png",
+    "models/npc/crowd-male-skin-4.png",
+    "models/npc/crowd-male-skin-5.png",
+    "models/npc/crowd-male-skin-6.png"
+   ]
+  },
+  "crowd-female": {
+   "file": "models/npc/crowd-female.glb.json",
+   "sex": "f",
+   "kind": "crowd",
+   "pack": "bitsoft",
+   "label": "BitSoft woman",
+   "clothing": [
+    "models/npc/crowd-female-clothing-1.png",
+    "models/npc/crowd-female-clothing-2.png",
+    "models/npc/crowd-female-clothing-3.png",
+    "models/npc/crowd-female-clothing-4.png",
+    "models/npc/crowd-female-clothing-5.png",
+    "models/npc/crowd-female-clothing-6.png"
+   ],
+   "skin": [
+    "models/npc/crowd-female-skin-1.png",
+    "models/npc/crowd-female-skin-2.png",
+    "models/npc/crowd-female-skin-3.png",
+    "models/npc/crowd-female-skin-4.png",
+    "models/npc/crowd-female-skin-5.png",
+    "models/npc/crowd-female-skin-6.png"
+   ]
+  },
+  "police": {
+   "file": "models/npc/police.glb.json",
+   "sex": "m",
+   "kind": "worker",
+   "pack": "workers",
+   "label": "Police officer",
+   "tex": "models/npc/police.png"
+  },
+  "hivis": {
+   "file": "models/npc/hivis.glb.json",
+   "sex": "m",
+   "kind": "worker",
+   "pack": "workers",
+   "label": "Hi-vis worker",
+   "tex": "models/npc/hivis.png"
+  },
+  "denim": {
+   "file": "models/npc/denim.glb.json",
+   "sex": "m",
+   "kind": "worker",
+   "pack": "workers",
+   "label": "Denim worker",
+   "tex": "models/npc/denim.png"
+  },
+  "hazmat-1": {
+   "file": "models/npc/hazmat-1.glb.json",
+   "sex": "m",
+   "kind": "featured",
+   "pack": "hazmat",
+   "label": "Hazmat 1",
+   "tex": "models/npc/hazmat-1.png"
+  },
+  "hazmat-2": {
+   "file": "models/npc/hazmat-2.glb.json",
+   "sex": "m",
+   "kind": "featured",
+   "pack": "hazmat",
+   "label": "Hazmat 2",
+   "tex": "models/npc/hazmat-2.png"
+  },
+  "hazmat-3": {
+   "file": "models/npc/hazmat-3.glb.json",
+   "sex": "m",
+   "kind": "featured",
+   "pack": "hazmat",
+   "label": "Hazmat 3",
+   "tex": "models/npc/hazmat-3.png"
+  },
+  "casual": {
+   "file": "models/npc/casual.glb.json",
+   "sex": "f",
+   "kind": "featured",
+   "pack": "casual",
+   "label": "Casual woman",
+   "tex": "models/npc/casual.png"
+  },
+  "retro-m1": {
+   "file": "models/npc/retro-m1.glb.json",
+   "sex": "m",
+   "kind": "featured",
+   "pack": "retro",
+   "label": "Retro man 1",
+   "tex": "models/npc/retro-m1.png"
+  },
+  "retro-m2": {
+   "file": "models/npc/retro-m2.glb.json",
+   "sex": "m",
+   "kind": "featured",
+   "pack": "retro",
+   "label": "Retro man 2",
+   "tex": "models/npc/retro-m2.png"
+  },
+  "retro-m3": {
+   "file": "models/npc/retro-m3.glb.json",
+   "sex": "m",
+   "kind": "featured",
+   "pack": "retro",
+   "label": "Retro man 3",
+   "tex": "models/npc/retro-m3.png"
+  },
+  "retro-m4": {
+   "file": "models/npc/retro-m4.glb.json",
+   "sex": "m",
+   "kind": "featured",
+   "pack": "retro",
+   "label": "Retro man 4",
+   "tex": "models/npc/retro-m4.png"
+  },
+  "retro-m5": {
+   "file": "models/npc/retro-m5.glb.json",
+   "sex": "m",
+   "kind": "featured",
+   "pack": "retro",
+   "label": "Retro man 5",
+   "tex": "models/npc/retro-m5.png"
+  },
+  "retro-f1": {
+   "file": "models/npc/retro-f1.glb.json",
+   "sex": "f",
+   "kind": "featured",
+   "pack": "retro",
+   "label": "Retro woman 1",
+   "tex": "models/npc/retro-f1.png"
+  },
+  "retro-f2": {
+   "file": "models/npc/retro-f2.glb.json",
+   "sex": "f",
+   "kind": "featured",
+   "pack": "retro",
+   "label": "Retro woman 2",
+   "tex": "models/npc/retro-f2.png"
+  },
+  "retro-f3": {
+   "file": "models/npc/retro-f3.glb.json",
+   "sex": "f",
+   "kind": "featured",
+   "pack": "retro",
+   "label": "Retro woman 3",
+   "tex": "models/npc/retro-f3.png"
+  },
+  "retro-f4": {
+   "file": "models/npc/retro-f4.glb.json",
+   "sex": "f",
+   "kind": "featured",
+   "pack": "retro",
+   "label": "Retro woman 4",
+   "tex": "models/npc/retro-f4.png"
+  },
+  "retro-f5": {
+   "file": "models/npc/retro-f5.glb.json",
+   "sex": "f",
+   "kind": "featured",
+   "pack": "retro",
+   "label": "Retro woman 5",
+   "tex": "models/npc/retro-f5.png"
+  },
+  "itch-1": {
+   "file": "models/npc/itch-1.glb.json",
+   "sex": "m",
+   "kind": "featured",
+   "pack": "itch",
+   "label": "itch.io man 1",
+   "tex": "models/npc/itch-1.png"
+  },
+  "itch-2": {
+   "file": "models/npc/itch-2.glb.json",
+   "sex": "m",
+   "kind": "featured",
+   "pack": "itch",
+   "label": "itch.io man 2",
+   "tex": "models/npc/itch-2.png"
+  },
+  "itch-3": {
+   "file": "models/npc/itch-3.glb.json",
+   "sex": "m",
+   "kind": "featured",
+   "pack": "itch",
+   "label": "itch.io man 3",
+   "tex": "models/npc/itch-3.png"
+  },
+  "chibi": {
+   "file": "models/npc/chibi.glb.json",
+   "sex": "m",
+   "kind": "featured",
+   "pack": "polyone-free",
+   "label": "Chibi base mesh (PolyOne, Sketchfab)",
+   "scale": 2.6
+  }
+ },
+ "packs": {
+  "bitsoft": "Rigged Low-Poly Male NPCs v1.1 / Rigged Low-Poly Female NPCs, by BitSoft",
+  "workers": "PSX - Low Poly Everyday Workers Character Pack",
+  "hazmat": "PSX Hazmat Characters",
+  "casual": "PSX Female Character - Casual Outfit",
+  "retro": "PSX Character Pack - 10 PSX Retro Characters",
+  "itch": "PSX_Character (itch.io)"
+ }
+}

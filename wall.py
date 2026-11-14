@@ -10,9 +10,11 @@ DeepSeek picks the best offer. Every model token and every page read is streamed
 Reuses post_json / load_env / SITES from agora.py. Stdlib only; the cutout needs macOS 14+, anywhere else
 the wall shows the photos as they are. The page itself is wall.html.
 """
-import ipaddress, json, os, re, subprocess, sys, tempfile, time, urllib.error, urllib.parse, urllib.request
+import glob, ipaddress, json, os, re, shutil, subprocess, sys, tempfile, time, urllib.error, urllib.parse, urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+import threading
 
 import agora
 
@@ -30,7 +32,12 @@ CONDITIONS = ("new", "used", "refurbished")
 ALLOWED_IMAGES = set()  # photo URLs we sent to the browser; /cut serves only these
 CUTOUT_SRC = os.path.join(agora.HERE, "cutout.m")
 CUTOUT_BIN = os.path.join(agora.HERE, ".cutout-bin")
-CUTOUT_TIMEOUT_S = 20
+CUTOUT_TIMEOUT_S = 8   # a normal cutout takes under a second; a stuck one must not hold a worker (and the photos queued behind it)
+STUCK_DIR = os.environ.get("AGORA_STUCK_DIR", "")  # debugging aid, off unless set
+WARM_AFTER_S = 15      # the cutout engine goes cold when idle: its first run then takes ~4 s, and several cold runs at once all time out
+WARM_TIMEOUT_S = 30
+SLOW_PHOTO_S = 1.5     # photos slower than this get a log line saying which step took the time
+PHOTO_TIMEOUT_S = 8    # downloading the photo from the site
 CUTS = {}  # photo URL -> (content type, bytes). ponytail: unbounded memory cache; cap it if the server runs for days
 DEEPSEEK_URL = "https://api.deepseek.com/v1/chat/completions"
 # ponytail: rough fixed rates so offers in six currencies compare; fetch ECB daily rates when money decisions depend on it
@@ -90,6 +97,28 @@ ADVISE_SYSTEM = (
     '"search":"a full new request, only when the user now wants a different product or different sites, else null"}. '
     "Judge only from the listed fields; an empty delivery field means the page did not say."
 )
+
+BRAIN_SYSTEM = (
+    "You are the brain of Agora's shopping guide: a character who talks with the user by voice while Agora reads European "
+    "second-hand and shop sites live. You get the conversation so far, whether a search is running, the offers now loaded "
+    "(one JSON object per line, eur = price in euros; there may be none) and what just happened. Decide what the guide does next. "
+    'Reply with JSON only: {"action":"search"|"answer"|"ask",'
+    '"request":"for search: the whole request in one line, at most 120 characters: product, budget, condition, place. Else empty",'
+    '"say":"what the guide says aloud, in the user\'s language: at most 2 short spoken sentences, no lists, no ids, no links. '
+    "search: one short line that you go and look. answer: the answer; name an offer by what it is, its price and its site. "
+    'ask: the ONE most useful question",'
+    '"show":[{"id":"<offer id>","why":"at most 6 words"}]}. '
+    "search: the user wants a product, or new limits (another budget, condition or country) that the loaded offers cannot answer. "
+    "A product name alone is enough to search: ask first only when you cannot tell which product is meant. "
+    "answer: whatever the loaded offers can answer (cheapest, nearest, which one fits, compare, under a price): put up to 3 of "
+    "them in show, best first. Small talk and general shopping questions are also answer, briefly, with show empty. "
+    "While a search is running, never start it again for the same thing: answer that you are still reading the sites. "
+    "When a search just finished, the action is answer: choose up to 3 offers that fit the request best (the product itself, "
+    "not accessories or parts; inside the budget and condition asked), best first, and say what, price and where. "
+    "If none fit, say so plainly. Only name offers from the list. Never invent an offer, a price or a site."
+)
+BRAIN_ACTIONS = ("search", "answer", "ask")
+MAX_SHOW = 3
 
 MCP_TOOL = {
     "name": "find_offers",
@@ -177,6 +206,8 @@ def valid_offers(raw, s):
     return out[:MAX_OFFERS]
 
 
+MD_LINK = re.compile(r"!?\[([^\]]*)\]\([^)]*\)")  # [text](url) -> text
+RAW_TASTE = 900      # characters of raw page text sent to the browser per site
 LINKED_IMAGE = re.compile(r"\[!\[[^\]]*\]\((https://[^)\s]+)\)[^\]]*\]\((https?://[^)\s]+)\)")
 
 
@@ -353,6 +384,9 @@ def read_site(env, s, p):
     meta = j.get("key_metadata") if isinstance(j.get("key_metadata"), dict) else {}
     log = {"site": s["site"], "secs": round(time.time() - t, 1), "status": status, "n": len(offers), "ok": bool(offers),
            "credits": meta.get("credits_consumed"), "credits_left": meta.get("credits_remaining")}
+    page = md.get("data") if isinstance(md.get("data"), str) else ""
+    log["chars"] = len(page)  # what the browser shows as "the mess": how much page went in, and a taste of it
+    log["raw"] = " ".join(MD_LINK.sub(r"\1", page).split())[:RAW_TASTE]
     if not offers:
         reason = "rate limit: 10 reads/min on this key" if status == 429 else (
             j.get("message") or out.get("message") or ("no matching listings" if status == 200 else f"HTTP {status}"))
@@ -371,6 +405,29 @@ def advise(env, request, offers, emit, src):
     advice = valid_advice(raw, {o["id"] for o in offers})
     emit({"type": "agent", **advice})
     return advice
+
+
+def valid_brain(obj, ids, q, found=False):
+    """What the guide's brain decided. Untrusted model output: a known action, short text, only ids of offers we sent."""
+    obj = obj if isinstance(obj, dict) else {}
+    action = "answer" if found or obj.get("action") not in BRAIN_ACTIONS else obj["action"]
+    show = {}  # id -> why, in the model's order, each offer once
+    for s in obj.get("show") if isinstance(obj.get("show"), list) else []:
+        if isinstance(s, dict) and s.get("id") in ids:
+            show.setdefault(s["id"], text_of(s, "why", 60))
+    return {"action": action, "request": (text_of(obj, "request", 200) or q[:200]) if action == "search" else "",
+            "say": text_of(obj, "say", 400),
+            "show": [{"id": i, "why": w} for i, w in show.items()][:MAX_SHOW] if action == "answer" else []}
+
+
+def brain(env, q, turns, offers, busy, found):
+    """The guide's brain: one fast call (reasoning off) that turns what the user said, or a search that just finished
+    (found), into the next move: search, answer from the loaded offers, or ask. Raises RuntimeError when DeepSeek fails."""
+    said = "\n".join(f"{t['role']}: {t['content']}" for t in turns) or "(nothing yet)"
+    listed = "\n".join(json.dumps(o, ensure_ascii=False) for o in offers) or "(none)"
+    now = f'The search for "{q}" just finished. Choose the offers that fit and tell the user.' if found else f"The user just said: {q}"
+    user = f"Conversation so far:\n{said}\n\nA search is running: {'yes' if busy else 'no'}\n\nOffers loaded:\n{listed}\n\n{now}"
+    return valid_brain(deepseek_json(env, BRAIN_SYSTEM, user, lambda e: None, "brain", think=False), {o["id"] for o in offers}, q, found)
 
 
 def search(env, q, emit, ready=None, about="", pick=True):
@@ -421,7 +478,7 @@ def fetch_image(url):
     if url not in ALLOWED_IMAGES or not public_https(url):
         raise ValueError("not an image from this search")
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (agora-wall)", "Accept": "image/*"})
-    with IMAGE_OPENER.open(req, timeout=20) as r:
+    with IMAGE_OPENER.open(req, timeout=PHOTO_TIMEOUT_S) as r:
         ctype = r.headers.get_content_type()
         data = r.read(MAX_IMAGE_BYTES + 1)
     if not ctype.startswith("image/") or len(data) > MAX_IMAGE_BYTES:
@@ -443,27 +500,74 @@ def build_cutout():
     return done.returncode == 0
 
 
+WARM_LOCK = threading.Lock()
+LAST_CUT = [0.0]  # when a cutout last finished
+
+
+def warm_cutout():
+    """Wakes the cutout engine with one run on its own when it has been idle. Everyone else waits on the lock meanwhile,
+    so the photos of a new search never start cold side by side."""
+    with WARM_LOCK:
+        if time.time() - LAST_CUT[0] < WARM_AFTER_S:
+            return
+        sample = next(iter(sorted(glob.glob(os.path.join(agora.HERE, "shelf", "*.png")))), None)
+        if sample:
+            t = time.time()
+            with tempfile.TemporaryDirectory() as d:
+                try:
+                    subprocess.run([CUTOUT_BIN, sample, os.path.join(d, "warm.png")], capture_output=True, timeout=WARM_TIMEOUT_S)
+                except (subprocess.TimeoutExpired, OSError) as e:
+                    print(f"cutout warm-up failed: {e}", flush=True)
+            print(f"cutout engine warmed in {time.time() - t:.1f}s", flush=True)
+        LAST_CUT[0] = time.time()
+
+
 def cut_image(url, can_cut):
     """Returns (content_type, bytes): the object as a cropped transparent PNG, or the photo itself if lifting fails."""
     if url in CUTS:
         return CUTS[url]
+    t = time.time()
     ctype, data = fetch_image(url)
+    got, size = time.time(), len(data)
     if can_cut:
+        warm_cutout()
         with tempfile.TemporaryDirectory() as d:
             src, out = os.path.join(d, "photo"), os.path.join(d, "cut.png")
             with open(src, "wb") as f:
                 f.write(data)
+            done = None
             try:
                 done = subprocess.run([CUTOUT_BIN, src, out], capture_output=True, text=True, timeout=CUTOUT_TIMEOUT_S)
-                if done.returncode == 0:
-                    with open(out, "rb") as f:
-                        ctype, data = "image/png", f.read()
-                else:  # 2 = no object found; anything else is a real failure worth a log line
-                    print(f"cutout exit {done.returncode} for {url[:100]} {done.stderr.strip()[:200]}", flush=True)
             except (subprocess.TimeoutExpired, OSError) as e:
-                print(f"cutout failed for {url[:100]}: {e}", flush=True)
+                print(f"cutout failed for {url[:100]}: {str(e)[-40:]}", flush=True)
+                if STUCK_DIR:  # keep the bytes that got stuck, to run the tool on them by hand
+                    os.makedirs(STUCK_DIR, exist_ok=True)
+                    shutil.copy(src, os.path.join(STUCK_DIR, f"{time.time():.3f}"))
+            if done and done.returncode == 0:
+                with open(out, "rb") as f:
+                    ctype, data = "image/png", f.read()
+            elif done:  # 2 = no object found; anything else is a real failure worth a log line
+                print(f"cutout exit {done.returncode} for {url[:100]} {done.stderr.strip()[:200]}", flush=True)
+            LAST_CUT[0] = time.time()
+    if time.time() - t > SLOW_PHOTO_S:
+        print(f"slow photo: download {got - t:.1f}s ({size // 1024} KB), cutout {time.time() - got:.1f}s ({len(data) // 1024} KB) {url[:90]}", flush=True)
     CUTS[url] = (ctype, data)
     return CUTS[url]
+
+
+CUT_POOL = ThreadPoolExecutor(6)  # ponytail: 6 cutouts at a time (8 cores here), first found first cut
+CUT_JOBS = {}  # photo URL -> Future. ponytail: never emptied, same ceiling as CUTS
+CUT_LOCK = threading.Lock()
+
+
+def cut_soon(url, can_cut):
+    """Starts lifting a photo in the background (once per URL) and returns its Future. Called when an offer is found,
+    so the cutout is usually ready before the browser asks for it."""
+    with CUT_LOCK:
+        job = CUT_JOBS.get(url)
+        if job is None or (job.done() and job.exception()):  # a failed photo gets another try when asked again
+            job = CUT_JOBS[url] = CUT_POOL.submit(cut_image, url, can_cut)
+        return job
 
 
 def mcp_reply(env, msg):
@@ -532,7 +636,7 @@ class Handler(BaseHTTPRequestHandler):
         if path.path == "/cut":
             url = (urllib.parse.parse_qs(path.query).get("u") or [""])[0]
             try:
-                ctype, data = cut_image(url, self.can_cut)
+                ctype, data = cut_soon(url, self.can_cut).result()
             except (ValueError, urllib.error.URLError, TimeoutError, OSError) as e:
                 print(f"photo failed: {url[:120]} {e}", flush=True)
                 return self.say(502, "Could not load this photo")
@@ -549,6 +653,10 @@ class Handler(BaseHTTPRequestHandler):
         def emit(event):
             if event.get("type") != "think":
                 print(json.dumps(event, ensure_ascii=False)[:200], flush=True)
+            if event.get("type") == "plan" and self.can_cut:
+                CUT_POOL.submit(warm_cutout)  # the sites take seconds to answer: wake the cutout engine meanwhile
+            if event.get("type") == "offer":
+                cut_soon(event["image"], self.can_cut)  # head start: lift the photo while the card is still on its way
             try:
                 self.wfile.write((json.dumps(event) + "\n").encode())
                 self.wfile.flush()
@@ -587,6 +695,15 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == "/chat":
             turns, offers = valid_turns(body.get("messages")), chat_offers(body.get("offers"))
             return self.stream(lambda emit: talk(self.env, q.strip(), turns, offers, emit))
+        if self.path == "/brain":  # the voice guide (guide/): what to do with what the user just said
+            turns, offers = valid_turns(body.get("messages")), chat_offers(body.get("offers"))
+            try:
+                move = brain(self.env, q.strip(), turns, offers, body.get("busy") is True, body.get("event") == "found")
+            except RuntimeError as e:
+                print(f"brain failed: {e}", flush=True)
+                return self.say(502, "The guide's brain did not answer")
+            print("brain " + json.dumps(move, ensure_ascii=False)[:200], flush=True)
+            return self.send_bytes(200, "application/json", json.dumps(move).encode())
         self.say(404, "Not found")
 
     def log_message(self, *a):
@@ -640,6 +757,11 @@ def check():
     assert valid_advice({"best": "o2", "hide": "junk"}, {"o1", "o2"})["best"] == "o2" and valid_advice(None, set())["hide"] == []
     c = chat_offers([{"id": "o1", "title": "T", "price": 5, "site": "tori", "evil": "x" * 9999}, {"id": "o2"}, "junk"] + [{"id": "o3", "title": "T", "price": 1}] * 200)
     assert len(c) == MAX_CHAT_OFFERS and "evil" not in c[0] and c[0]["site"] == "tori" and chat_offers(None) == []
+    b = valid_brain({"action": "answer", "request": "x", "say": " hi ", "show": [{"id": "o2", "why": "cheap"}, {"id": "o9"}, {"id": "o2"}, "junk", {"id": "o1"}]}, {"o1", "o2"}, "q")
+    assert b == {"action": "answer", "request": "", "say": "hi", "show": [{"id": "o2", "why": "cheap"}, {"id": "o1", "why": ""}]}, b
+    assert valid_brain({"action": "search", "show": [{"id": "o1"}]}, {"o1"}, "a bike") == {"action": "search", "request": "a bike", "say": "", "show": []}
+    assert valid_brain({"action": "search"}, set(), "q", found=True)["action"] == "answer" and valid_brain("junk", set(), "q")["action"] == "answer"
+    assert len(valid_brain({"action": "answer", "show": [{"id": f"o{i}"} for i in range(9)]}, {f"o{i}" for i in range(9)}, "q")["show"]) == MAX_SHOW
     try:
         cut_image("https://img.tori.net/not-from-a-search", False)
         raise AssertionError("proxy served an image nobody searched for")
@@ -650,6 +772,10 @@ def check():
     assert mcp_reply({}, {"jsonrpc": "2.0", "method": "notifications/initialized"}) is None
     assert mcp_reply({}, {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "find_offers", "arguments": {}}})["error"]["code"] == -32602
     assert mcp_reply({}, {"jsonrpc": "2.0", "id": 4, "method": "nope"})["error"]["code"] == -32601 and mcp_reply({}, [1])["error"]["code"] == -32600
+    assert MD_LINK.sub(r"\1", "a [Osta nyt](https://x.fi/1) ![kuva](https://x.fi/a.jpg) b") == "a Osta nyt kuva b"
+    first = cut_soon("https://img.tori.net/not-from-a-search", False)
+    assert cut_soon("https://img.tori.net/not-from-a-search", False) is first or first.done()  # one job per photo, a failed one may be retried
+    assert isinstance(first.exception(timeout=5), ValueError)
     print("check ok")
 
 
