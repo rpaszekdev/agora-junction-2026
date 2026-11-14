@@ -4,6 +4,10 @@ Robert wants Agora to feel like talking to a person in a shop. The guide stands 
 appear on the left as round bubbles, and you just talk. This file explains that picture, shows the style it
 must keep, says what already runs in this repo, and lists what is still missing.
 
+> **Albert, start here.** Robert asks you to focus first on one thing: connect Gemini Live into the body,
+> together with proper gestures. The brief for that is in [AGENTS.md](AGENTS.md). Your coding agents read
+> that file on their own when they open this repo. Everything below is the wider picture.
+
 Written on 14 Nov 2026 from Robert's description and from the code in this commit. Where something is a
 suggestion and not Robert's decision, it says so.
 
